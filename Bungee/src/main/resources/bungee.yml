@@ -1,0 +1,3 @@
+name: Bungee
+version: ${project.version}
+main: de.epsdev.plugins.bungee.Bungee
