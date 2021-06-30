@@ -88,6 +88,6 @@ public class EPS_API {
     }
 
     public void disable(){
-
+        connection.send(new RequestDisconnectPackage(EPS_API.NAME));
     }
 }

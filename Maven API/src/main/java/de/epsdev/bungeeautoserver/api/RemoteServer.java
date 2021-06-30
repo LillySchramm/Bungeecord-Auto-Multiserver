@@ -21,8 +21,6 @@ public class RemoteServer {
         this.max_players = max_players;
         this.type = type;
 
-        System.out.println(this.name);
-
         ServerManager.addServer(this);
 
     }
