@@ -1,8 +1,8 @@
 package de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
+import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
-import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

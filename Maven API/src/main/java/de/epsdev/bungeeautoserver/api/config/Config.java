@@ -1,7 +1,6 @@
-package de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.config;
+package de.epsdev.bungeeautoserver.api.config;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.FileNotFoundException;
