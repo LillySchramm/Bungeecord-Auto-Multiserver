@@ -6,7 +6,7 @@ import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class spigottest extends JavaPlugin {
+public final class BungeecordAutoConfig extends JavaPlugin {
 
     @Override
     public void onEnable() {
