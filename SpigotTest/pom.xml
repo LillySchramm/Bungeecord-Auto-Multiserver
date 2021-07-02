@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.epsdev</groupId>
-    <artifactId>bungeeautoserver.spigottest</artifactId>
+    <artifactId>BungeecordAutoConfig</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -74,7 +74,7 @@
         <dependency>
             <groupId>de.epsdev</groupId>
             <artifactId>bungeeautoserver.api</artifactId>
-            <version>0.0.120210701.184542-1</version>
+            <version>0.0.120210701.201114-1</version>
         </dependency>
     </dependencies>
 </project>

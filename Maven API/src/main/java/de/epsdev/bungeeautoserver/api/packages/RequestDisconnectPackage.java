@@ -18,7 +18,7 @@ public class RequestDisconnectPackage extends Package {
         super("RequestDisconnectPackage");
 
         add("key", EPS_API.key);
-        add("name",name);
+        add("name",EPS_API.NAME);
     }
 
     @Override
@@ -30,6 +30,7 @@ public class RequestDisconnectPackage extends Package {
                 e.printStackTrace();
             }
         }else {
+            System.out.println("NAME " + getString("name") );
             ServerManager.removeServer(ServerManager.getRemoteServerByName(getString("name")));
         }
     }

@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Config {
     public static boolean isBungeeReady(){
-        return patchServerProperties() && patchSpigotYML();
+        return !patchServerProperties() && !patchSpigotYML();
     }
 
     private static boolean patchServerProperties(){
@@ -20,17 +20,16 @@ public class Config {
         String newContent = "";
         boolean changeNeeded = false;
         for (String line : readFile(file)){
-            if(line.equalsIgnoreCase("online-mode=true")){
+            if(line.contains("online-mode=true")){
                 line = "online-mode=false";
                 changeNeeded = true;
+                System.out.println(EPS_API.PREFIX + "Had to update server.properties");
             }
 
             newContent += line + "\n";
         }
 
         writeFile(file, newContent);
-
-        System.out.println(EPS_API.PREFIX + "Had to update server.properties");
 
         return changeNeeded;
     }
@@ -44,15 +43,13 @@ public class Config {
             if(line.equalsIgnoreCase("  bungeecord: false")){
                 line = "  bungeecord: true";
                 changeNeeded = true;
+                System.out.println(EPS_API.PREFIX + "Had to update spigot.yml");
             }
 
             newContent += line + "\n";
         }
 
         writeFile(file, newContent);
-
-        System.out.println(EPS_API.PREFIX + "Had to update spigot.yml");
-
         return changeNeeded;
     }
 

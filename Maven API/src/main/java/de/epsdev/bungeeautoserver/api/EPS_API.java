@@ -14,14 +14,15 @@ public class EPS_API {
 
     public static final String PREFIX = "[Auto Bungee] ";
 
-    public static String NAME = "";
+    public static String NAME = "iAmADefault";
+    public static String DEFAULT_SERVER = "Hub";
 
     private final OperationType operationType;
     private String remoteAddress;
     private Server server;
     private Connection connection;
     private int port = -1;
-    private int max_players = 20;
+    private int max_players = 2;
     private String type = "Hub";
 
     public static String key = "";

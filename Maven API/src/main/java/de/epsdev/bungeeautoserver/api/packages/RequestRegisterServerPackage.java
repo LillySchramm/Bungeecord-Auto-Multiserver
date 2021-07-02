@@ -32,12 +32,19 @@ public class RequestRegisterServerPackage extends Package {
                 e.printStackTrace();
             }
         }else {
-            InetSocketAddress socketAddress = InetSocketAddress.createUnresolved(String.valueOf(socket.getInetAddress())
+            System.out.println("I am cool: " + socket.getInetAddress());
+            InetSocketAddress socketAddress = new InetSocketAddress(String.valueOf(socket.getInetAddress()).replace("/","")
                     ,getInteger("port"));
 
             int maxPlayers = getInteger("max_players");
 
             RemoteServer remoteServer = new RemoteServer(socketAddress, getString("type") ,maxPlayers);
+
+            try {
+                new RespondRegisterPackage(remoteServer.getName()).send(socket);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
