@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ServerManager {
-    private static HashMap<String, ArrayList<RemoteServer>> servers = new HashMap<>();
+    public static HashMap<String, ArrayList<RemoteServer>> servers = new HashMap<>();
     public static ServerStatusEmitter statusEmitter;
 
     public static void addServer(RemoteServer remoteServer){
@@ -51,7 +51,7 @@ public class ServerManager {
         return null;
     }
 
-    public static String connectToServer(String type){
+    public static String connectToServer(String type, String playername){
         String ret = "null";
         if(!servers.containsKey(type)) return ret;
 
@@ -65,9 +65,42 @@ public class ServerManager {
             }
         }
 
-        getRemoteServerByName(ret).setCurrent_players(last_current + 1);
+        if(!ret.equals("null")){
+            getRemoteServerByName(ret).players.add(playername);
+
+            PlayerManager.changePlayerServer(ret, playername);
+        }
+
+        printStatus();
 
         return ret;
+    }
+
+    public static void removeFromServer(String playername, String server){
+        getRemoteServerByName(server).players.remove(playername);
+        printStatus();
+    }
+
+    public static void printStatus(){
+
+        System.out.println(EPS_API.PREFIX + "--------------------------------------------------");
+        System.out.println(EPS_API.PREFIX + "                    STATUS                        ");
+        System.out.println(EPS_API.PREFIX + "                                                  ");
+
+        for(String key : servers.keySet()){
+            System.out.println(EPS_API.PREFIX + "                " + key);
+            System.out.println(EPS_API.PREFIX + " ");
+
+            for (RemoteServer remoteServer : servers.get(key)){
+                System.out.println(EPS_API.PREFIX + remoteServer.getStatus());
+            }
+
+            System.out.println(EPS_API.PREFIX + " ");
+            System.out.println(EPS_API.PREFIX + " ");
+        }
+
+        System.out.println(EPS_API.PREFIX + "                                                  ");
+        System.out.println(EPS_API.PREFIX + "--------------------------------------------------");
     }
 
 }

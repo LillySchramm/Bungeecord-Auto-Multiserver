@@ -13,6 +13,9 @@ public class Config {
     public static boolean isBungeeReady(){
         return !patchServerProperties() && !patchSpigotYML();
     }
+    public static boolean isBungeeServerReady(){
+        return !patchSpigotYML();
+    }
 
     private static boolean patchServerProperties(){
         File file = new File(System.getProperty("user.dir") + "\\server.properties");
@@ -44,6 +47,31 @@ public class Config {
                 line = "  bungeecord: true";
                 changeNeeded = true;
                 System.out.println(EPS_API.PREFIX + "Had to update spigot.yml");
+            }
+
+            newContent += line + "\n";
+        }
+
+        writeFile(file, newContent);
+        return changeNeeded;
+    }
+
+    private static boolean patchBungeeConfig(){
+        File file = new File(System.getProperty("user.dir") + "\\config.yml");
+
+        String newContent = "";
+        boolean changeNeeded = false;
+        for (String line : readFile(file)){
+            if(line.contains("ip_forward: false")){
+                line = "ip_forward: true";
+                changeNeeded = true;
+                System.out.println(EPS_API.PREFIX + "Had to update config.yml");
+            }
+
+            if(line.contains("online_mode: false")){
+                line = "online_mode: true";
+                changeNeeded = true;
+                System.out.println(EPS_API.PREFIX + "Had to update config.yml");
             }
 
             newContent += line + "\n";

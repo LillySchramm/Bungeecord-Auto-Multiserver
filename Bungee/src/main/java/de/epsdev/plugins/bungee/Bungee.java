@@ -1,47 +1,71 @@
 package de.epsdev.plugins.bungee;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
+import de.epsdev.bungeeautoserver.api.PlayerManager;
 import de.epsdev.bungeeautoserver.api.ServerManager;
+import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
+import de.epsdev.bungeeautoserver.api.interfaces.PlayerStatusEmitter;
 import de.epsdev.bungeeautoserver.api.interfaces.ServerStatusEmitter;
+import de.epsdev.plugins.bungee.events.PlayerDisconnectFromProxyEvent;
 import de.epsdev.plugins.bungee.events.PlayerJoinEvent;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.config.ListenerInfo;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public final class Bungee extends Plugin {
 
     @Override
     public void onEnable() {
-        removeAll();
 
-        //Register Events
+        if(Config.isBungeeServerReady()){
+            removeAll();
 
-        getProxy().getPluginManager().registerListener(this,new PlayerJoinEvent());
+            //Register Events
 
-        // API stuff
+            getProxy().getPluginManager().registerListener(this,new PlayerJoinEvent());
+            getProxy().getPluginManager().registerListener(this,new PlayerDisconnectFromProxyEvent());
 
-        EPS_API eps_api = new EPS_API(OperationType.SERVER);
+            // API stuff
 
-        ServerManager.statusEmitter = new ServerStatusEmitter() {
-            @Override
-            public void onConnect(String s, InetSocketAddress inetSocketAddress) {
-                addServer(s,inetSocketAddress, "MOTD", false);
-            }
+            EPS_API eps_api = new EPS_API(OperationType.SERVER);
+            EPS_API.key = getKey();
 
-            @Override
-            public void onDisconnect(String s) {
-                removeServer(s);
-            }
-        };
+            ServerManager.statusEmitter = new ServerStatusEmitter() {
+                @Override
+                public void onConnect(String s, InetSocketAddress inetSocketAddress) {
+                    addServer(s,inetSocketAddress, "MOTD", false);
+                }
 
-        eps_api.init();
+                @Override
+                public void onDisconnect(String s) {
+                    removeServer(s);
+                }
+            };
+
+            PlayerManager.playerStatusEmitter = s -> {
+                ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(s);
+                proxiedPlayer.sendMessage(new ComponentBuilder("Sending to " + PlayerManager.players.get(s) + "!")
+                        .color(ChatColor.YELLOW).create());
+            };
+
+            eps_api.init();
+        }else {
+            ProxyServer.getInstance().stop();
+        }
+
     }
 
     @Override
@@ -54,11 +78,6 @@ public final class Bungee extends Plugin {
         System.out.println(EPS_API.PREFIX + "Connected " + name + address.getHostName());
     }
     public static void removeServer(String name) {
-        /*for (ProxiedPlayer p : ProxyServer.getInstance().getServerInfo(name).getPlayers()) {
-            p.disconnect(new TextComponent("This server was forcefully closed.\nPlease report this error in the bug report section of the forums."));
-        }*/
-
-
         ProxyServer.getInstance().getServers().remove(name);
         System.out.println(EPS_API.PREFIX + "Removed " + name);
     }
@@ -68,7 +87,34 @@ public final class Bungee extends Plugin {
         for (String server : s) {
             removeServer(server);
         }
+    }
 
-        System.out.println(ProxyServer.getInstance().getServers().keySet());
+    public String getKey() {
+        try {
+            if (!getDataFolder().exists())
+                getDataFolder().mkdir();
+
+            File file = new File(getDataFolder(), "config.yml");
+
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+
+            Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
+
+            if(configuration.contains("key")){
+                return configuration.getString("key");
+            }else {
+                configuration.set("key", "");
+                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, new File(getDataFolder(), "config.yml"));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 }

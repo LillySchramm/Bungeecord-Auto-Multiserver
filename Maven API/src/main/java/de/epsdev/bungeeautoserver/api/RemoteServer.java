@@ -1,6 +1,8 @@
 package de.epsdev.bungeeautoserver.api;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class RemoteServer {
@@ -10,7 +12,8 @@ public class RemoteServer {
     private String type;
 
     private int max_players;
-    private int current_players = 0;
+
+    List<String> players = new ArrayList<>();
 
     Random rnd = new Random();
 
@@ -49,14 +52,23 @@ public class RemoteServer {
     }
 
     public int getCurrent_players() {
-        return current_players;
-    }
-
-    public void setCurrent_players(int current_players) {
-        this.current_players = current_players;
+        return this.players.size();
     }
 
     public String getType() {
         return type;
+    }
+
+    public String getStatus(){
+        String ret = "";
+
+        ret += "NAME: " + this.getName();
+        ret += " PLAYERS: " + this.getCurrent_players() + "/" + this.max_players + "\n";
+
+        for(String player : players){
+            ret += EPS_API.PREFIX + "- " + player + "\n";
+        }
+
+        return ret;
     }
 }

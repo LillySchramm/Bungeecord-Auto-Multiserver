@@ -17,7 +17,7 @@ public class RequestRegisterServerPackage extends Package {
 
     public RequestRegisterServerPackage(int port, String type, int max_players){
         super("RequestRegisterServerPackage");
-        add("key", EPS_API.key);
+        add("password", EPS_API.key);
         add("port", port);
         add("max_players", max_players);
         add("type", type);
@@ -25,14 +25,15 @@ public class RequestRegisterServerPackage extends Package {
 
     @Override
     public void onPackageReceive(Socket socket, Object o) {
-        if(!getString("key").equals(EPS_API.key) && !EPS_API.key.equals("")){
+        System.out.println("REQ:" + getString("password"));
+        System.out.println("BSE" + EPS_API.key);
+        if(!getString("password").equals(EPS_API.key) || !EPS_API.key.equals("")){
             try {
                 new PackageServerError("Invalid key used.").send(socket);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else {
-            System.out.println("I am cool: " + socket.getInetAddress());
             InetSocketAddress socketAddress = new InetSocketAddress(String.valueOf(socket.getInetAddress()).replace("/","")
                     ,getInteger("port"));
 

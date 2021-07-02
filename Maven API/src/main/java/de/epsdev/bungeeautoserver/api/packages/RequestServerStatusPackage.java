@@ -1,24 +1,25 @@
 package de.epsdev.bungeeautoserver.api.packages;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
-import de.epsdev.bungeeautoserver.api.ServerManager;
+import de.epsdev.bungeeautoserver.api.RemoteServer;
 import de.epsdev.packages.packages.Base_Package;
 import de.epsdev.packages.packages.Package;
 import de.epsdev.packages.packages.PackageServerError;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class RequestDisconnectPackage extends Package {
-    public RequestDisconnectPackage(Base_Package base_package) {
+public class RequestServerStatusPackage extends Package {
+    public RequestServerStatusPackage(Base_Package base_package) {
         super(base_package);
     }
 
-    public RequestDisconnectPackage(String name){
-        super("RequestDisconnectPackage");
+    public RequestServerStatusPackage(String type){
+        super("RequestServerStatus");
 
+        add("type", type);
         add("key", EPS_API.key);
-        add("name",EPS_API.NAME);
     }
 
     @Override
@@ -30,8 +31,11 @@ public class RequestDisconnectPackage extends Package {
                 e.printStackTrace();
             }
         }else {
-            System.out.println("NAME " + getString("name") );
-            ServerManager.removeServer(ServerManager.getRemoteServerByName(getString("name")));
+            try {
+                new RespondServerStatusPackage(getString("type")).send(socket);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

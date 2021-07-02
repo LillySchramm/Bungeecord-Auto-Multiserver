@@ -10,6 +10,9 @@ import de.epsdev.packages.Connection;
 import de.epsdev.packages.Server;
 import de.epsdev.packages.packages.Package;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class EPS_API {
 
     public static final String PREFIX = "[Auto Bungee] ";
@@ -24,6 +27,8 @@ public class EPS_API {
     private int port = -1;
     private int max_players = 2;
     private String type = "Hub";
+
+    public HashMap<String, ArrayList<ServerInfo>> serverInfo = new HashMap<>();
 
     public static String key = "";
 
