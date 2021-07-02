@@ -17,13 +17,13 @@ public class RequestDisconnectPackage extends Package {
     public RequestDisconnectPackage(String name){
         super("RequestDisconnectPackage");
 
-        add("key", EPS_API.key);
+        add("password", EPS_API.key);
         add("name",EPS_API.NAME);
     }
 
     @Override
     public void onPackageReceive(Socket socket, Object o) {
-        if(!getString("key").equals(EPS_API.key) || EPS_API.key.equals("")){
+        if(ServerManager.verifyKey(getString("password"))){
             try {
                 new PackageServerError("Invalid key used.").send(socket);
             } catch (IOException e) {

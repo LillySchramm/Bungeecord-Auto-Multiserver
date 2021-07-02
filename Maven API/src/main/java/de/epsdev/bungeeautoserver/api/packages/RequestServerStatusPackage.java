@@ -2,6 +2,7 @@ package de.epsdev.bungeeautoserver.api.packages;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.RemoteServer;
+import de.epsdev.bungeeautoserver.api.ServerManager;
 import de.epsdev.packages.packages.Base_Package;
 import de.epsdev.packages.packages.Package;
 import de.epsdev.packages.packages.PackageServerError;
@@ -19,12 +20,12 @@ public class RequestServerStatusPackage extends Package {
         super("RequestServerStatus");
 
         add("type", type);
-        add("key", EPS_API.key);
+        add("password", EPS_API.key);
     }
 
     @Override
     public void onPackageReceive(Socket socket, Object o) {
-        if(!getString("key").equals(EPS_API.key) || EPS_API.key.equals("")){
+        if(!ServerManager.verifyKey(getString("password"))){
             try {
                 new PackageServerError("Invalid key used.").send(socket);
             } catch (IOException e) {

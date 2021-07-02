@@ -2,6 +2,7 @@ package de.epsdev.bungeeautoserver.api.packages;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.RemoteServer;
+import de.epsdev.bungeeautoserver.api.ServerManager;
 import de.epsdev.packages.packages.Base_Package;
 import de.epsdev.packages.packages.Package;
 import de.epsdev.packages.packages.PackageServerError;
@@ -25,9 +26,7 @@ public class RequestRegisterServerPackage extends Package {
 
     @Override
     public void onPackageReceive(Socket socket, Object o) {
-        System.out.println("REQ:" + getString("password"));
-        System.out.println("BSE" + EPS_API.key);
-        if(!getString("password").equals(EPS_API.key) || !EPS_API.key.equals("")){
+        if(!ServerManager.verifyKey(getString("password"))){
             try {
                 new PackageServerError("Invalid key used.").send(socket);
             } catch (IOException e) {

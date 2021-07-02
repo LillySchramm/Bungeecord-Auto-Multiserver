@@ -103,4 +103,8 @@ public class ServerManager {
         System.out.println(EPS_API.PREFIX + "--------------------------------------------------");
     }
 
+    public static boolean verifyKey(String key){
+        return (key.equals(EPS_API.key));
+    }
+
 }
