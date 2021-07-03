@@ -17,15 +17,16 @@ public class RequestServerStatusPackage extends Package {
     }
 
     public RequestServerStatusPackage(String type){
-        super("RequestServerStatus");
+        super("RequestServerStatusPackage");
 
+        add("key", EPS_API.key);
         add("type", type);
-        add("password", EPS_API.key);
+
     }
 
     @Override
     public void onPackageReceive(Socket socket, Object o) {
-        if(!ServerManager.verifyKey(getString("password"))){
+        if(!ServerManager.verifyKey(getString("key"))){
             try {
                 new PackageServerError("Invalid key used.").send(socket);
             } catch (IOException e) {

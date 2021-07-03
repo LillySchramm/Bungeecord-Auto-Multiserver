@@ -18,7 +18,7 @@ public class Config {
     }
 
     private static boolean patchServerProperties(){
-        File file = new File(System.getProperty("user.dir") + "\\server.properties");
+        File file = new File(System.getProperty("user.dir") + "/server.properties");
 
         String newContent = "";
         boolean changeNeeded = false;
@@ -38,7 +38,7 @@ public class Config {
     }
 
     private static boolean patchSpigotYML(){
-        File file = new File(System.getProperty("user.dir") + "\\spigot.yml");
+        File file = new File(System.getProperty("user.dir") + "/spigot.yml");
 
         String newContent = "";
         boolean changeNeeded = false;
@@ -57,7 +57,7 @@ public class Config {
     }
 
     private static boolean patchBungeeConfig(){
-        File file = new File(System.getProperty("user.dir") + "\\config.yml");
+        File file = new File(System.getProperty("user.dir") + "/config.yml");
 
         String newContent = "";
         boolean changeNeeded = false;

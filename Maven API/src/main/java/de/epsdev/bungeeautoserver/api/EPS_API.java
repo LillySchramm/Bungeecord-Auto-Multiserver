@@ -3,9 +3,7 @@ package de.epsdev.bungeeautoserver.api;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.exeptions.NoPortDefinedException;
 import de.epsdev.bungeeautoserver.api.exeptions.NoRemoteAddressException;
-import de.epsdev.bungeeautoserver.api.packages.RequestDisconnectPackage;
-import de.epsdev.bungeeautoserver.api.packages.RequestRegisterServerPackage;
-import de.epsdev.bungeeautoserver.api.packages.RespondRegisterPackage;
+import de.epsdev.bungeeautoserver.api.packages.*;
 import de.epsdev.packages.Connection;
 import de.epsdev.packages.Server;
 import de.epsdev.packages.packages.Package;
@@ -23,7 +21,7 @@ public class EPS_API {
     private final OperationType operationType;
     private String remoteAddress;
     private Server server;
-    private Connection connection;
+    public Connection connection;
     private int port = -1;
     private int max_players = 2;
     private String type = "Hub";
@@ -54,8 +52,10 @@ public class EPS_API {
 
     public void init(){
         Package.registerPackage("RequestRegisterServerPackage", RequestRegisterServerPackage.class);
-        Package.registerPackage("RequestDisconnectPackage", RequestDisconnectPackage.class);
+        Package.registerPackage("RequestChangePlayerServerPackage", RequestChangePlayerServerPackage.class);
+        Package.registerPackage("RequestServerStatusPackage", RequestServerStatusPackage.class);
         Package.registerPackage("RespondRegisterPackage", RespondRegisterPackage.class);
+        Package.registerPackage("RespondServerStatusPackage", RespondServerStatusPackage.class);
 
         if(this.operationType == OperationType.SERVER){
 
@@ -93,7 +93,5 @@ public class EPS_API {
         }
     }
 
-    public void disable(){
-        connection.send(new RequestDisconnectPackage(EPS_API.NAME));
-    }
+    public void disable(){}
 }

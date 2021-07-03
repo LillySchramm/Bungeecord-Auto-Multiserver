@@ -21,12 +21,12 @@ public class RequestChangePlayerServerPackage extends Package {
         add("server", server);
         add("playername", playername);
         add("isSpecific", isSpecific);
-        add("password", EPS_API.key);
+        add("key", EPS_API.key);
     }
 
     @Override
     public void onPackageReceive(Socket socket, Object o) {
-        if(!ServerManager.verifyKey(getString("password"))){
+        if(!ServerManager.verifyKey(getString("key"))){
             try {
                 new PackageServerError("Invalid key used.").send(socket);
             } catch (IOException e) {

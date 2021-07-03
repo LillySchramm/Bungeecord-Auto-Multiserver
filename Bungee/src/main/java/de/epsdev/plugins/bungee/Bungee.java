@@ -9,6 +9,7 @@ import de.epsdev.bungeeautoserver.api.interfaces.PlayerStatusEmitter;
 import de.epsdev.bungeeautoserver.api.interfaces.ServerStatusEmitter;
 import de.epsdev.plugins.bungee.events.PlayerDisconnectFromProxyEvent;
 import de.epsdev.plugins.bungee.events.PlayerJoinEvent;
+import de.epsdev.plugins.bungee.schedulers.TimeoutScheduler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -27,8 +28,12 @@ import java.util.ArrayList;
 
 public final class Bungee extends Plugin {
 
+    public static Plugin plugin;
+
     @Override
     public void onEnable() {
+
+        plugin = this;
 
         if(Config.isBungeeServerReady()){
             removeAll();
@@ -62,6 +67,7 @@ public final class Bungee extends Plugin {
             };
 
             eps_api.init();
+            TimeoutScheduler.run();
         }else {
             ProxyServer.getInstance().stop();
         }
@@ -78,6 +84,7 @@ public final class Bungee extends Plugin {
         System.out.println(EPS_API.PREFIX + "Connected " + name + address.getHostName());
     }
     public static void removeServer(String name) {
+
         ProxyServer.getInstance().getServers().remove(name);
         System.out.println(EPS_API.PREFIX + "Removed " + name);
     }
@@ -117,4 +124,5 @@ public final class Bungee extends Plugin {
 
         return "";
     }
+
 }

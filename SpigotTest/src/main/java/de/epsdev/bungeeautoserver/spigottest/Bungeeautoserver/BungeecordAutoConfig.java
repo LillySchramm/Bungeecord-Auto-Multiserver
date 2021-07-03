@@ -3,6 +3,7 @@ package de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver;
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
+import de.epsdev.packages.packages.PackageRequestDisconnect;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,10 +24,9 @@ public final class BungeecordAutoConfig extends JavaPlugin {
             eps_api.setType(config.getString("server_type"));
 
             EPS_API.key = config.getString("bungee_password");
-            System.out.println( "sssssssssss" + config.getString("bungee_password"));
-            System.out.println( "sssssssssss" + EPS_API.key);
 
             eps_api.init();
+
         }else {
             Bukkit.shutdown();
         }

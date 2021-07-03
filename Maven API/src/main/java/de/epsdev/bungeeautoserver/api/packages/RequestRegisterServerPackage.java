@@ -18,7 +18,7 @@ public class RequestRegisterServerPackage extends Package {
 
     public RequestRegisterServerPackage(int port, String type, int max_players){
         super("RequestRegisterServerPackage");
-        add("password", EPS_API.key);
+        add("key", EPS_API.key);
         add("port", port);
         add("max_players", max_players);
         add("type", type);
@@ -26,7 +26,7 @@ public class RequestRegisterServerPackage extends Package {
 
     @Override
     public void onPackageReceive(Socket socket, Object o) {
-        if(!ServerManager.verifyKey(getString("password"))){
+        if(!ServerManager.verifyKey(getString("key"))){
             try {
                 new PackageServerError("Invalid key used.").send(socket);
             } catch (IOException e) {

@@ -21,10 +21,10 @@ public class ServerManager {
         }
 
         statusEmitter.onConnect(remoteServer.getName(), remoteServer.getInetSocketAddress());
+        printStatus();
     }
 
     public static void removeServer(RemoteServer remoteServer){
-        System.out.println(servers);
         servers.get(remoteServer.getType()).removeIf(server -> server.getName().equals(remoteServer.getName()));
         statusEmitter.onDisconnect(remoteServer.getName());
         System.out.println(servers);
