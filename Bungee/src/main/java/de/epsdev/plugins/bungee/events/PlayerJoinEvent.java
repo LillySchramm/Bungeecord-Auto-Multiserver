@@ -19,11 +19,7 @@ public class PlayerJoinEvent implements Listener {
 
         String server = ServerManager.connectToServer(EPS_API.DEFAULT_SERVER, proxiedPlayer.getDisplayName());
 
-        if(!server.equals("null")){
-            proxiedPlayer.connect(
-                    ProxyServer.getInstance().getServerInfo(server)
-            );
-        }else {
+        if(server.equals("null")){
             proxiedPlayer.disconnect(new ComponentBuilder("The server you are trying to connect to is full!")
                     .color(ChatColor.RED).append("\n\n Please try again in a few minutes.").color(ChatColor.YELLOW).bold(true).underlined(true)
                     .create());

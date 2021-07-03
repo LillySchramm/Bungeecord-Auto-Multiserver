@@ -17,7 +17,7 @@ public class PlayerManager {
             players.put(playername, server);
         }
 
-        playerStatusEmitter.onPlayerServerChange(playername);
+        playerStatusEmitter.onPlayerServerChange(playername, server);
     }
 
     public static void onPlayerDisconnect(String playername){

@@ -1,12 +1,8 @@
 package de.epsdev.plugins.bungee.schedulers;
 
-import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.RemoteServer;
 import de.epsdev.bungeeautoserver.api.ServerManager;
 import de.epsdev.plugins.bungee.Bungee;
-import net.md_5.bungee.api.Callback;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.ServerPing;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +32,6 @@ public class TimeoutScheduler {
     private static void checkPing(String name){
         Bungee.plugin.getProxy().getServers().get(name).ping((result, error) -> {
             if(error!=null){
-                System.out.println(EPS_API.PREFIX + "Server '" + name + "' has disconnected.");
                 ServerManager.removeServer(ServerManager.getRemoteServerByName(name));
             }
         });

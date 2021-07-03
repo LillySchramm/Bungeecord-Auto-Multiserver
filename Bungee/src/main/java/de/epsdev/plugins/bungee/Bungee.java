@@ -60,9 +60,14 @@ public final class Bungee extends Plugin {
                 }
             };
 
-            PlayerManager.playerStatusEmitter = s -> {
-                ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(s);
-                proxiedPlayer.sendMessage(new ComponentBuilder("Sending to " + PlayerManager.players.get(s) + "!")
+            PlayerManager.playerStatusEmitter = (playername, server) -> {
+                ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(playername);
+
+                proxiedPlayer.connect(
+                        ProxyServer.getInstance().getServerInfo(server)
+                );
+
+                proxiedPlayer.sendMessage(new ComponentBuilder("Sending to " + server + "!")
                         .color(ChatColor.YELLOW).create());
             };
 

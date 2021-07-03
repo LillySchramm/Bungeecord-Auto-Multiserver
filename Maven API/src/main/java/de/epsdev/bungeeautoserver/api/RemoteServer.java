@@ -17,15 +17,15 @@ public class RemoteServer {
 
     Random rnd = new Random();
 
-    public RemoteServer(InetSocketAddress inetSocketAddress, String type ,int max_players){
+    public RemoteServer(InetSocketAddress inetSocketAddress, String type, int max_players){
 
         this.inetSocketAddress = inetSocketAddress;
         this.name = generateName();
         this.max_players = max_players;
         this.type = type;
 
+        ServerManager.clearServerList(this.inetSocketAddress);
         ServerManager.addServer(this);
-
     }
 
     private String generateName(){

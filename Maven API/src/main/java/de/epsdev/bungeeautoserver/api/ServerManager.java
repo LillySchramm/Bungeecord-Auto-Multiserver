@@ -2,6 +2,7 @@ package de.epsdev.bungeeautoserver.api;
 
 import de.epsdev.bungeeautoserver.api.interfaces.ServerStatusEmitter;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,17 +22,14 @@ public class ServerManager {
         }
 
         statusEmitter.onConnect(remoteServer.getName(), remoteServer.getInetSocketAddress());
-        printStatus();
     }
 
     public static void removeServer(RemoteServer remoteServer){
         servers.get(remoteServer.getType()).removeIf(server -> server.getName().equals(remoteServer.getName()));
         statusEmitter.onDisconnect(remoteServer.getName());
-        System.out.println(servers);
     }
 
     public static boolean doesServerExist(String name){
-
         AtomicBoolean exists = new AtomicBoolean(false);
 
         servers.forEach((k,v) -> v.forEach((i) -> {
@@ -71,36 +69,28 @@ public class ServerManager {
             PlayerManager.changePlayerServer(ret, playername);
         }
 
-        printStatus();
-
         return ret;
     }
 
     public static void removeFromServer(String playername, String server){
         getRemoteServerByName(server).players.remove(playername);
-        printStatus();
     }
 
-    public static void printStatus(){
+    // This function exists to avoid the edge-chase that the server restarts faster that it gets pinged resulting
+    // in a state where the server is registered multiple times.
+    public static void clearServerList(InetSocketAddress inetSocketAddress){
+        RemoteServer toBeRemoved = null;
 
-        System.out.println(EPS_API.PREFIX + "--------------------------------------------------");
-        System.out.println(EPS_API.PREFIX + "                    STATUS                        ");
-        System.out.println(EPS_API.PREFIX + "                                                  ");
-
-        for(String key : servers.keySet()){
-            System.out.println(EPS_API.PREFIX + "                " + key);
-            System.out.println(EPS_API.PREFIX + " ");
-
-            for (RemoteServer remoteServer : servers.get(key)){
-                System.out.println(EPS_API.PREFIX + remoteServer.getStatus());
+        for(ArrayList<RemoteServer> remoteServers : servers.values()){
+            for(RemoteServer remoteServer : remoteServers) {
+                if(remoteServer.getInetSocketAddress().getHostName().equals(inetSocketAddress.getHostName())
+                && remoteServer.getInetSocketAddress().getPort() == remoteServer.getInetSocketAddress().getPort()){
+                    toBeRemoved = remoteServer;
+                }
             }
-
-            System.out.println(EPS_API.PREFIX + " ");
-            System.out.println(EPS_API.PREFIX + " ");
         }
 
-        System.out.println(EPS_API.PREFIX + "                                                  ");
-        System.out.println(EPS_API.PREFIX + "--------------------------------------------------");
+        if (toBeRemoved != null) removeServer(toBeRemoved);
     }
 
     public static boolean verifyKey(String key){

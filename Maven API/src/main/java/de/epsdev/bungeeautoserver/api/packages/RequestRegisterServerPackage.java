@@ -38,7 +38,7 @@ public class RequestRegisterServerPackage extends Package {
 
             int maxPlayers = getInteger("max_players");
 
-            RemoteServer remoteServer = new RemoteServer(socketAddress, getString("type") ,maxPlayers);
+            RemoteServer remoteServer = new RemoteServer(socketAddress, getString("type") , maxPlayers);
 
             try {
                 new RespondRegisterPackage(remoteServer.getName()).send(socket);
