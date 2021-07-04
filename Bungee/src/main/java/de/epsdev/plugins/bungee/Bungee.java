@@ -7,6 +7,7 @@ import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.interfaces.PlayerStatusEmitter;
 import de.epsdev.bungeeautoserver.api.interfaces.ServerStatusEmitter;
+import de.epsdev.plugins.bungee.commands.c_Instance;
 import de.epsdev.plugins.bungee.events.PlayerDisconnectFromProxyEvent;
 import de.epsdev.plugins.bungee.events.PlayerJoinEvent;
 import de.epsdev.plugins.bungee.schedulers.TimeoutScheduler;
@@ -43,10 +44,22 @@ public final class Bungee extends Plugin {
             getProxy().getPluginManager().registerListener(this,new PlayerJoinEvent());
             getProxy().getPluginManager().registerListener(this,new PlayerDisconnectFromProxyEvent());
 
+            // Register Commands
+
+            ProxyServer.getInstance().getPluginManager().registerCommand(this, new c_Instance());
+
             // API stuff
 
             EPS_API eps_api = new EPS_API(OperationType.SERVER);
-            EPS_API.key = getKey();
+
+            // Config
+
+            String[] config_params = getConfigParams();
+
+            EPS_API.key = config_params[0];
+            EPS_API.DEFAULT_SERVER = config_params[1];
+
+            // Connection Management
 
             ServerManager.statusEmitter = new ServerStatusEmitter() {
                 @Override
@@ -72,6 +85,9 @@ public final class Bungee extends Plugin {
             };
 
             eps_api.init();
+
+            // Cleanup services
+
             TimeoutScheduler.run();
         }else {
             ProxyServer.getInstance().stop();
@@ -81,7 +97,7 @@ public final class Bungee extends Plugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+
     }
 
     public static void addServer(String name, InetSocketAddress address, String motd, boolean restricted) {
@@ -101,25 +117,29 @@ public final class Bungee extends Plugin {
         }
     }
 
-    public String getKey() {
+    public String[] getConfigParams() {
+
+        String key = "";
+        String default_type = "Hub";
+
         try {
             if (!getDataFolder().exists())
                 getDataFolder().mkdir();
 
             File file = new File(getDataFolder(), "config.yml");
 
-
             if (!file.exists()) {
                 file.createNewFile();
             }
 
-
             Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
 
-            if(configuration.contains("key")){
-                return configuration.getString("key");
+            if(configuration.contains("key") && configuration.contains("default_type")){
+                key = configuration.getString("key");
+                default_type = configuration.getString("default_type");
             }else {
-                configuration.set("key", "");
+                configuration.set("key", key);
+                configuration.set("default_type", default_type);
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, new File(getDataFolder(), "config.yml"));
             }
 
@@ -127,7 +147,7 @@ public final class Bungee extends Plugin {
             e.printStackTrace();
         }
 
-        return "";
+        return new String[]{key, default_type};
     }
 
 }

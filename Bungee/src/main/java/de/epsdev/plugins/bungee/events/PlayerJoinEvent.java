@@ -26,10 +26,4 @@ public class PlayerJoinEvent implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPostLogin2(PreLoginEvent event) {
-
-
-    }
-
 }

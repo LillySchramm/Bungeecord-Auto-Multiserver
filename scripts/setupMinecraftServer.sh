@@ -14,4 +14,4 @@ echo "java -Xmx3G -Xms3G -jar spigot-1.17.jar --nogui" > start.sh
 
 chmod +x start.sh
 
-./start
+./start.sh
