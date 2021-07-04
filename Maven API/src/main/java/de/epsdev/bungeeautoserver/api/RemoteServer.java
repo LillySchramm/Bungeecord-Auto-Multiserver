@@ -13,6 +13,8 @@ public class RemoteServer {
 
     private int max_players;
 
+    public int timeout_ticks = 0;
+
     List<String> players = new ArrayList<>();
 
     Random rnd = new Random();

@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TimeoutScheduler {
 
+    public static final int TIMEOUT_TICKS = 20;
     public static boolean running = false;
 
     public static void run(){
@@ -32,7 +33,12 @@ public class TimeoutScheduler {
     private static void checkPing(String name){
         Bungee.plugin.getProxy().getServers().get(name).ping((result, error) -> {
             if(error!=null){
-                ServerManager.removeServer(ServerManager.getRemoteServerByName(name));
+                ServerManager.getRemoteServerByName(name).timeout_ticks ++;
+
+                if(ServerManager.getRemoteServerByName(name).timeout_ticks > TIMEOUT_TICKS)
+                    ServerManager.removeServer(ServerManager.getRemoteServerByName(name));
+            }else {
+                ServerManager.getRemoteServerByName(name).timeout_ticks = 0;
             }
         });
     }
