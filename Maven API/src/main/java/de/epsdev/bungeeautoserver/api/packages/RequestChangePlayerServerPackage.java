@@ -15,7 +15,7 @@ public class RequestChangePlayerServerPackage extends Package {
         super(base_package);
     }
 
-    public RequestChangePlayerServerPackage(String server, String playername, boolean isSpecific){
+    public RequestChangePlayerServerPackage(String server, String playername, Boolean isSpecific){
         super("RequestChangePlayerServerPackage");
 
         add("server", server);

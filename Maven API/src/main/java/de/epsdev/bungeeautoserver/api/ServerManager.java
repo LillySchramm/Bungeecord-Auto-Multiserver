@@ -73,7 +73,7 @@ public class ServerManager {
     }
 
     public static void removeFromServer(String playername, String server){
-        getRemoteServerByName(server).players.remove(playername);
+        if(getRemoteServerByName(server) != null) getRemoteServerByName(server).players.remove(playername);
     }
 
     // This function exists to avoid the edge-chase that the server restarts faster that it gets pinged resulting
@@ -95,6 +95,18 @@ public class ServerManager {
 
     public static boolean verifyKey(String key){
         return (key.equals(EPS_API.key));
+    }
+
+    public static int[] calcTotals(List<ServerInfo> infos){
+        int total_max = 0;
+        int total_cur = 0;
+
+        for (ServerInfo info : infos){
+            total_max += info.maxPlayers;
+            total_cur += info.curPlayers;
+        }
+
+        return new int[]{total_max, total_cur, (int)((float) total_cur/ (float) Math.max(1, total_max) * 100)};
     }
 
 }

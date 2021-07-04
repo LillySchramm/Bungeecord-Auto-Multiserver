@@ -2,3 +2,15 @@ name: BungeecordAutoConfig
 version: ${project.version}
 main: de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.BungeecordAutoConfig
 api-version: 1.17
+commands:
+  changeServer:
+    description: Change your or another players current server.
+    permission: bungee.changeserver
+
+  changeInstance:
+    description: Change your or another players current server to a specific instance.
+    permission: bungee.changeserver
+
+  getServerInfo:
+    description: Returns information about a specific server type.
+    permission: bungee.status

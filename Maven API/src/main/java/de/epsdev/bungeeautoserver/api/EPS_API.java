@@ -26,7 +26,7 @@ public class EPS_API {
     private int max_players = 2;
     private String type = "Hub";
 
-    public HashMap<String, ArrayList<ServerInfo>> serverInfo = new HashMap<>();
+    public static HashMap<String, ArrayList<ServerInfo>> serverInfo = new HashMap<>();
 
     public static String key = "";
 
