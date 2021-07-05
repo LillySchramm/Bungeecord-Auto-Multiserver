@@ -93,5 +93,7 @@ public class EPS_API {
         }
     }
 
-    public void disable(){}
+    public void disable(){
+        connection.close();
+    }
 }

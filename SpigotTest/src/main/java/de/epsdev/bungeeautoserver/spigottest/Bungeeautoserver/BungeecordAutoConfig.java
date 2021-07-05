@@ -58,7 +58,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        if(eps_api != null) eps_api.disable();
     }
 
     public void init_config(){
