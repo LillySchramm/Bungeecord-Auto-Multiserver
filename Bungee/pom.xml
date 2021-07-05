@@ -68,9 +68,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>de.epsdev</groupId>
+            <groupId>de.eps-dev</groupId>
             <artifactId>bungeeautoserver.api</artifactId>
-            <version>LATEST</version>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>

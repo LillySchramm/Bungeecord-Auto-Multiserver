@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.epsdev</groupId>
+    <groupId>de.eps-dev</groupId>
     <artifactId>BungeecordAutoConfig</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -61,12 +61,6 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>github</id>
-            <name>GitHub EliasSchramm Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/EliasSchramm</url>
-        </repository>
-
     </repositories>
 
     <dependencies>
@@ -78,7 +72,7 @@
         </dependency>
 
         <dependency>
-            <groupId>de.epsdev</groupId>
+            <groupId>de.eps-dev</groupId>
             <artifactId>bungeeautoserver.api</artifactId>
             <version>1.0.0</version>
         </dependency>
