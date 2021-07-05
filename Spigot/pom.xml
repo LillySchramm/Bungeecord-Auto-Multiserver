@@ -63,7 +63,7 @@
         </repository>
         <repository>
             <id>github</id>
-            <url>https://github.com/EliasSchramm/Bungeecord-Auto-Multiserver</url>
+            <url>https://maven.pkg.github.com</url>
         </repository>
     </repositories>
 
