@@ -1,2 +1,3 @@
 # Bungeecord Auto Multiserver
  
+README in progress...
