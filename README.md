@@ -213,6 +213,9 @@ Start the server. It may restart/stop a few times in order to finish the install
 
 # Updating
 Automatic if installed via script. (At restart.)
+
+> __This feature isn't active yet. Update via the instructions below. __
+
 <br>
 
 Just replace the .jar with the newest build from: [https://ci.eps-dev.de](https://ci.eps-dev.de)
