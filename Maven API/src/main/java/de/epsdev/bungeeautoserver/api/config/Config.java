@@ -14,7 +14,7 @@ public class Config {
         return !patchServerProperties() && !patchSpigotYML();
     }
     public static boolean isBungeeServerReady(){
-        return !patchSpigotYML();
+        return !patchBungeeConfig();
     }
 
     private static boolean patchServerProperties(){
