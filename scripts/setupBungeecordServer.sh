@@ -6,7 +6,7 @@ echo "You need to set a password. A strong password should be chosen because it 
 read -p "Enter a password for this server: " password
 echo " "
 
-read -p "Default Server Type: " server_tpye
+read -p "Default Server Type: " defaultServer
 
 #System Update
 
@@ -38,17 +38,36 @@ chmod +x server.sh start.sh
 mkdir plugins
 cd plugins
 
-wget https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/Bungee-1.0-SNAPSHOT.jar --no-check-certificate # For some reason my certs aren't known even though all browsers accept them without a problem 
+wget https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/Bungee-1.0-SNAPSHOT.jar --no-check-certificate # For some reason my certs aren't known even though all browsers accept them without a problem
 
 mkdir Bungee
 cd Bungee
 
-echo "key: '${password}'"                               >> config.yml
-echo "default_type: ${server_type}"                     >> config.yml
+echo "key: '${password}'"                                   >> config.yml
+echo "default_type: '${defaultServer}'"                     >> config.yml
 
 cd ../..
 
 # Start the server
+
+echo " "
+echo " "
+echo " "
+echo "--------------------------------------------------"
+echo "Finished the server setup."
+echo "The server will start in 10 seconds and might"
+echo "restart a few times in order to finish the config."
+echo " "
+echo "Thank you for using BungeecordAutoConfig."
+echo "Please report bugs at: "
+echo "https://github.com/EliasSchramm/Bungeecord-Auto-Multiserver/issues"
+echo " "
+echo "--------------------------------------------------"
+echo " "
+echo " "
+echo " "
+
+sleep 10
 
 ./start.sh
 screen -r Bungeecord

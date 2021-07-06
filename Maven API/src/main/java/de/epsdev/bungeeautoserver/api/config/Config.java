@@ -74,6 +74,17 @@ public class Config {
                 System.out.println(EPS_API.PREFIX + "Had to update config.yml");
             }
 
+            if(line.contains("host: 0.0.0.0:25577")){
+                line = "host: 0.0.0.0:25565";
+                changeNeeded = true;
+                System.out.println(EPS_API.PREFIX + "Had to update config.yml");
+            }
+
+            if(line.contains("    address: localhost:25565")){
+                line = "    address: localhost:25566";
+                changeNeeded = true;
+                System.out.println(EPS_API.PREFIX + "Had to update config.yml");
+            }
             newContent += line + "\n";
         }
 
