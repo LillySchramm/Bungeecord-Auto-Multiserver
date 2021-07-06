@@ -63,6 +63,7 @@ $JAVA -Xmx1G -jar BuildTools.jar --rev $serverVersion
 
 echo "eula=true" > eula.txt
 
+echo "#Installed via script"                                                                    >> server.sh
 echo "cd ${PWD}"                                                                                >> server.sh
 echo "while true; do"                                                                           >> server.sh
 echo "  ${JAVA} -Xmx${serverRam}M -Xms${serverRam}M -jar spigot-${serverVersion}.jar --nogui"   >> server.sh
@@ -129,7 +130,7 @@ cd plugins/
 
 ## Setup BungeeAutoConfig
 
-wget https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/BungeecordAutoConfig-1.0-SNAPSHOT.jar --no-check-certificate # For some reason my certs aren't known even though all browsers accept them without a problem
+wget https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/BungeecordAutoConfig.jar --no-check-certificate # For some reason my certs aren't known even though all browsers accept them without a problem
 mkdir BungeecordAutoConfig/
 cd BungeecordAutoConfig
 

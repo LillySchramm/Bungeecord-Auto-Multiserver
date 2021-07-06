@@ -24,6 +24,7 @@ cd bungeecord
 
 wget https://ci.md-5.net/job/BungeeCord/lastSuccessfulBuild/artifact/bootstrap/target/BungeeCord.jar
 
+echo "#Installed via script"                            >> server.sh
 echo "while true; do"                                   >> server.sh
 echo "  ${JAVA_16} -Xmx1G -Xms1G -jar BungeeCord.jar"   >> server.sh
 echo "done"                                             >> server.sh
@@ -38,7 +39,7 @@ chmod +x server.sh start.sh
 mkdir plugins
 cd plugins
 
-wget https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/Bungee-1.0-SNAPSHOT.jar --no-check-certificate # For some reason my certs aren't known even though all browsers accept them without a problem
+wget https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/Bungee.jar --no-check-certificate # For some reason my certs aren't known even though all browsers accept them without a problem
 
 mkdir Bungee
 cd Bungee

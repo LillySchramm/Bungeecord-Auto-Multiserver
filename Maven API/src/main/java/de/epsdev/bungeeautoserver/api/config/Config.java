@@ -75,7 +75,7 @@ public class Config {
             }
 
             if(line.contains("host: 0.0.0.0:25577")){
-                line = "host: 0.0.0.0:25565";
+                line = "  host: 0.0.0.0:25565";
                 changeNeeded = true;
                 System.out.println(EPS_API.PREFIX + "Had to update config.yml");
             }
