@@ -7,7 +7,6 @@ read -p "Enter a password for this server: " password
 echo " "
 
 read -p "Default Server Type: " server_tpye
-server_tpye=${server_tpye:-hub}
 
 #System Update
 
