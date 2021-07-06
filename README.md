@@ -167,7 +167,7 @@ finish the configuration. Once that's done you have a fully operational game ser
 correctly you should be able to see something like ```[Auto Bungee] Connected XDMm2 10.0.0.3``` in your proxy console.
 <br>
 
-Repeat this porgress for every gameserver you want to set up. 
+Repeat this progress for every gameserver you want to set up. 
 
 Congrats, you're done! Try connecting to your proxy server via Minecraft.
 ----
