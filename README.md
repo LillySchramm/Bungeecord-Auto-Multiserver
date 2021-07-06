@@ -4,7 +4,7 @@ An easy way to start and maintain a bungeecord network.
 
 ----------------
 
-#Contents
+# Contents
 
 1. Overview
 2. Usage
