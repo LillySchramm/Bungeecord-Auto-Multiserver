@@ -69,7 +69,7 @@ public class EPS_API {
                 System.out.println("------------------------------------------------------------");
             }
 
-            this.server = new Server(10101, 512, false);
+            this.server = new Server(10101, 512, true);
             this.server.start();
 
         }else if(this.operationType == OperationType.CLIENT){
