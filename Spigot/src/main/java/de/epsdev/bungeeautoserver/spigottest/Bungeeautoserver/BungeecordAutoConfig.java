@@ -40,7 +40,9 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new e_OnSignChange(), this);
         getServer().getPluginManager().registerEvents(new e_OnBlockInteract(), this);
 
-        if(Config.isBungeeReady()){
+        if(Config.isBungeeReady() && Config.checkUpdate("plugins/BungeecordAutoConfig",
+                "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/sha512/",
+                "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/BungeecordAutoConfig.jar")){
             eps_api = new EPS_API(OperationType.CLIENT);
             eps_api.setRemoteAddress(config.getString("bungee_address"));
             eps_api.setPort(Bukkit.getPort());

@@ -57,10 +57,6 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -74,7 +70,7 @@
         <dependency>
             <groupId>de.eps-dev</groupId>
             <artifactId>bungeeautoserver.api</artifactId>
-            <version>1.0.6</version>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 </project>

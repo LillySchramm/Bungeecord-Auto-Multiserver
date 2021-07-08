@@ -53,13 +53,6 @@
         </resources>
     </build>
 
-    <repositories>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>net.md-5</groupId>
@@ -70,7 +63,7 @@
         <dependency>
             <groupId>de.eps-dev</groupId>
             <artifactId>bungeeautoserver.api</artifactId>
-            <version>1.0.6</version>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 </project>

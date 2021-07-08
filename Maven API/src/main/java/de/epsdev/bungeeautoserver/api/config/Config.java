@@ -1,10 +1,14 @@
 package de.epsdev.bungeeautoserver.api.config;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
+import de.epsdev.bungeeautoserver.api.tools.VersionManagement;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,8 +21,37 @@ public class Config {
         return !patchBungeeConfig();
     }
 
-    public static boolean checkUpdateSpigot(){
-        return false;
+    public static boolean checkUpdate(String filename, String sha_url, String download_url){
+        File file = new File(System.getProperty("user.dir") + "/server.sh");
+
+        if(file.exists() && readFile(file).get(0).contains("Installed via script")){
+            System.out.println(EPS_API.PREFIX + "Checking for updates... ");
+
+            try {
+                String sha512 = VersionManagement.getSHA512(new File(System.getProperty("user.dir") + "/" + filename + ".jar"));
+                String check_sha512 = VersionManagement.getSHA512_URL(sha_url);
+
+                if(sha512.equals(check_sha512)){
+                    System.out.println(EPS_API.PREFIX + "Everything is up to date. Have a nice day.");
+                }else {
+                    System.out.println(EPS_API.PREFIX + "The installed version is outdated. Updating.... ");
+
+                    VersionManagement.downloadAndReplace(filename, download_url);
+
+                    return false;
+                }
+
+            } catch (IOException | NoSuchAlgorithmException | KeyManagementException e) {
+                e.printStackTrace();
+
+                return true;
+            }
+
+        }else{
+            System.out.println(EPS_API.PREFIX + "Not installed via script. Skipping autoupdatesss.");
+        }
+
+        return true;
     }
 
     private static boolean patchServerProperties(){

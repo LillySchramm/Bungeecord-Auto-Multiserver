@@ -36,7 +36,9 @@ public final class Bungee extends Plugin {
 
         plugin = this;
 
-        if(Config.isBungeeServerReady()){
+        if(Config.isBungeeServerReady() && Config.checkUpdate("plugins/Bungee",
+                "https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/sha512/",
+                "https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/Bungee.jar")){
             removeAll();
 
             //Register Events
