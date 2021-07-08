@@ -8,6 +8,7 @@ import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.interfaces.PlayerStatusEmitter;
 import de.epsdev.bungeeautoserver.api.interfaces.ServerStatusEmitter;
 import de.epsdev.plugins.bungee.commands.c_Instance;
+import de.epsdev.plugins.bungee.commands.c_tpToDefault;
 import de.epsdev.plugins.bungee.events.PlayerDisconnectFromProxyEvent;
 import de.epsdev.plugins.bungee.events.PlayerJoinEvent;
 import de.epsdev.plugins.bungee.schedulers.TimeoutScheduler;
@@ -41,6 +42,13 @@ public final class Bungee extends Plugin {
                 "https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/Bungee.jar")){
             removeAll();
 
+            // Config
+
+            String[] config_params = getConfigParams();
+
+            EPS_API.key = config_params[0];
+            EPS_API.DEFAULT_SERVER = config_params[1];
+
             //Register Events
 
             getProxy().getPluginManager().registerListener(this,new PlayerJoinEvent());
@@ -49,17 +57,11 @@ public final class Bungee extends Plugin {
             // Register Commands
 
             ProxyServer.getInstance().getPluginManager().registerCommand(this, new c_Instance());
+            ProxyServer.getInstance().getPluginManager().registerCommand(this, new c_tpToDefault(EPS_API.DEFAULT_SERVER));
 
             // API stuff
 
             EPS_API eps_api = new EPS_API(OperationType.SERVER);
-
-            // Config
-
-            String[] config_params = getConfigParams();
-
-            EPS_API.key = config_params[0];
-            EPS_API.DEFAULT_SERVER = config_params[1];
 
             // Connection Management
 
