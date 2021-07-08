@@ -9,8 +9,6 @@ VERSIONS_V16=(1.17)
 # Inputs
 
 while true; do
-    
-    echo "WARNING: Currently only version 1.17 is considered stable. Other versions might work but are highly experimental, unstable and aren't supported. In the future I am planing to support 1.12+."
     read -p "Enter the server version you want: " serverVersion
 
     if [[ " ${VERSIONS_V8[@]} " =~ " ${serverVersion} " ]]; then

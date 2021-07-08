@@ -33,7 +33,7 @@ For ease of use it also supports teleport-signs. Portals, NPC, GUI and cross-ser
 
 ## Support
 
-The plugin currently only supports Minecraft version 1.17+. Support for 1.12+ is planed for the near future.
+The plugin supports everything that's version 1.12+.
 
 
 # 2. Usage
@@ -160,7 +160,7 @@ To install the game server you have to execute the following command:
 wget https://raw.githubusercontent.com/EliasSchramm/Bungeecord-Auto-Multiserver/main/scripts/setupMinecraftServer.sh && sudo chmod +x setupMinecraftServer.sh && sudo bash ./setupMinecraftServer.sh 
 ```
 
-Enter the requested information. __WARNING: ONLY Version 1.17 is supported at this point in time!__ <br>
+Enter the requested information. <br>
 ![cmd](https://i.imgur.com/qcWZo0O.png) <br>
 
 Hit enter again, and the script will start installing everything.
