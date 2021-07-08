@@ -26,7 +26,7 @@ complete it's literally drag 'n drop.
 This project has more features than just its easy maintainability. 
 <br>
 It also features scripts that automate the entire installation process that also allows you to install 
-[LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/) networkwide (requires an MongoDB-URI).
+[LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/) networkwide (requires an MongoDB-URI). Besides that it also features Auto-Update so that you never have to worry about keeping your network up to date.
 <br>
 For ease of use it also supports teleport-signs. Portals, NPC, GUI and cross-server Inventorysync are yet to come.
 
@@ -90,6 +90,8 @@ release.__
 - ```/getserverinfo <type>``` shows you all server, and their current population, of a specified type.
     - Requires the ```bungee.status``` permission.<br>
     ![msg](https://i.imgur.com/tlQjXW2.png)
+ - ```/<defaultType>``` sends the player to a server with the type that was defined as default. 
+    - Requires the ```bungee.status``` permission.<br>
     
 ### Teleport-Signs
 
@@ -214,8 +216,6 @@ Start the server. It may restart/stop a few times in order to finish the install
 # Updating
 Automatic if installed via script. (At restart.)
 
-> __This feature isn't active yet. Update via the instructions below. __
-
 <br>
 
 Just replace the .jar with the newest build from: [https://ci.eps-dev.de](https://ci.eps-dev.de)
@@ -234,4 +234,4 @@ Just replace the .jar with the newest build from: [https://ci.eps-dev.de](https:
 
 # 6. Contributing
 
-Following soon....
+Report issues at [https://github.com/EliasSchramm/Bungeecord-Auto-Multiserver/issues/](https://github.com/EliasSchramm/Bungeecord-Auto-Multiserver/issues/)
