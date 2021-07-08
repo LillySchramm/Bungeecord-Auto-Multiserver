@@ -64,7 +64,7 @@ echo "eula=true" > eula.txt
 echo "#Installed via script"                                                                    >> server.sh
 echo "cd ${PWD}"                                                                                >> server.sh
 echo "while true; do"                                                                           >> server.sh
-echo "  ${JAVA} -Xmx${serverRam}M -Xms${serverRam}M -jar spigot-${serverVersion}.jar --nogui"   >> server.sh
+echo "  ${JAVA} -Xmx${serverRam}M -Xms${serverRam}M -jar spigot-${serverVersion}.jar"   >> server.sh
 echo "done"                                                                                     >> server.sh
 
 echo "cd ${PWD}"                                                                                >> start.sh                    
