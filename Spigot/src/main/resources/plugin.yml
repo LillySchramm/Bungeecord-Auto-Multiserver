@@ -1,7 +1,6 @@
 name: BungeecordAutoConfig
 version: ${project.version}
 main: de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.BungeecordAutoConfig
-api-version: 1.17
 commands:
   changeServer:
     description: Change your or another players current server.
