@@ -91,7 +91,7 @@ release.__
     - Requires the ```bungee.status``` permission.<br>
     ![msg](https://i.imgur.com/tlQjXW2.png)
  - ```/<defaultType>``` sends the player to a server with the type that was defined as default. 
-    - Requires the ```bungee.status``` permission.<br>
+    - No permissions required<br><br>
     
 ### Teleport-Signs
 
