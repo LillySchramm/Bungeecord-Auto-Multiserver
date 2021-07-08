@@ -74,7 +74,7 @@
         <dependency>
             <groupId>de.eps-dev</groupId>
             <artifactId>bungeeautoserver.api</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.6</version>
         </dependency>
     </dependencies>
 </project>

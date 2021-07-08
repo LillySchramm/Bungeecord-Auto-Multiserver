@@ -17,6 +17,10 @@ public class Config {
         return !patchBungeeConfig();
     }
 
+    public static boolean checkUpdateSpigot(){
+        return false;
+    }
+
     private static boolean patchServerProperties(){
         File file = new File(System.getProperty("user.dir") + "/server.properties");
 
@@ -121,4 +125,6 @@ public class Config {
             e.printStackTrace();
         }
     }
+
+
 }
