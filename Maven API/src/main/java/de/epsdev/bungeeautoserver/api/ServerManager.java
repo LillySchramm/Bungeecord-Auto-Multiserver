@@ -76,7 +76,7 @@ public class ServerManager {
         if(getRemoteServerByName(server) != null) getRemoteServerByName(server).players.remove(playername);
     }
 
-    // This function exists to avoid the edge-chase that the server restarts faster that it gets pinged resulting
+    // This function exists to avoid the edge-chase that the server restarts faster than it gets pinged resulting
     // in a state where the server is registered multiple times.
     public static void clearServerList(InetSocketAddress inetSocketAddress){
         RemoteServer toBeRemoved = null;
