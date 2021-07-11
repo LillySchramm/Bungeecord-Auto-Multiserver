@@ -102,7 +102,7 @@ public class SignManager {
                     sign.update(true);
                 }
             }
-        }, 60L, 20L * 5);
+        }, 60L, 20L * 2);
     }
 
     public static String center(String org){
