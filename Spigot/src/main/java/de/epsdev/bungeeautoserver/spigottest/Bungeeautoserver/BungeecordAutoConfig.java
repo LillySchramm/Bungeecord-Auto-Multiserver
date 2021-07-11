@@ -4,9 +4,7 @@ import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.ServerManager;
 import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
-import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.c_ChangeInstance;
-import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.c_ChangeServer;
-import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.c_getServerInfo;
+import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.*;
 
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnBlockInteract;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnSignChange;
@@ -34,6 +32,8 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getCommand("changeserver").setExecutor(new c_ChangeServer());
         getCommand("changeinstance").setExecutor(new c_ChangeInstance());
         getCommand("getServerInfo").setExecutor(new c_getServerInfo());
+        getCommand("closeserver").setExecutor(new c_closeserver());
+        getCommand("openserver").setExecutor(new c_openserver());
 
         // Events
 
@@ -43,6 +43,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         if(Config.isBungeeReady() && Config.checkUpdate("plugins/BungeecordAutoConfig",
                 "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/sha512/",
                 "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/BungeecordAutoConfig.jar")){
+
             eps_api = new EPS_API(OperationType.CLIENT);
             eps_api.setRemoteAddress(config.getString("bungee_address"));
             eps_api.setPort(Bukkit.getPort());

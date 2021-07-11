@@ -38,7 +38,11 @@ public class c_getServerInfo implements CommandExecutor {
                                 player.sendMessage(ChatColor.GREEN + "Totals: " + totals[1] + "/" + totals[0] + " (" + totals[2] + "%)");
 
                                 for (ServerInfo serverInfo : infos){
-                                    player.sendMessage(ChatColor.DARK_GREEN + serverInfo.name + " " +
+                                    ChatColor color = ChatColor.GREEN;
+
+                                    if(serverInfo.closed) color = ChatColor.RED;
+
+                                    player.sendMessage(color + serverInfo.name + " " +
                                             serverInfo.curPlayers + "/" +
                                             serverInfo.maxPlayers);
                                 }

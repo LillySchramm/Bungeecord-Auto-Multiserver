@@ -91,7 +91,11 @@ release.__
     - Requires the ```bungee.status``` permission.<br>
     ![msg](https://i.imgur.com/tlQjXW2.png)
  - ```/<defaultType>``` sends the player to a server with the type that was defined as default. 
-    - No permissions required<br><br>
+    - No permissions required<br>
+- ```/openserver``` ```/closeserver``` Opens / Closes the current instance. Players can't join closed instances. Closed 
+  instances won't count towards the number shown on shields. Players can still be transferred to closed instances via
+  ```/changeinstance <player?> <instance>```
+    - Requires the ```bungee.opencloseserver``` permission.<br>
     
 ### Teleport-Signs
 

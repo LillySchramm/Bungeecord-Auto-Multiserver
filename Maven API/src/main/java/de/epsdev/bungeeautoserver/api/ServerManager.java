@@ -56,7 +56,7 @@ public class ServerManager {
         int last_current = 0;
         for(RemoteServer remoteServer : servers.get(type)) {
             if(remoteServer.getCurrent_players() < remoteServer.getMax_players()){
-                if(remoteServer.getCurrent_players() >= last_current){
+                if(remoteServer.getCurrent_players() >= last_current && !remoteServer.isClosed()){
                     last_current = remoteServer.getCurrent_players();
                     ret = remoteServer.getName();
                 }
@@ -102,8 +102,10 @@ public class ServerManager {
         int total_cur = 0;
 
         for (ServerInfo info : infos){
-            total_max += info.maxPlayers;
-            total_cur += info.curPlayers;
+            if(!info.closed) {
+                total_max += info.maxPlayers;
+                total_cur += info.curPlayers;
+            }
         }
 
         return new int[]{total_max, total_cur, (int)((float) total_cur/ (float) Math.max(1, total_max) * 100)};

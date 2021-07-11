@@ -13,6 +13,8 @@ public class RemoteServer {
 
     private int max_players;
 
+    private boolean closed = false;
+
     public int timeout_ticks = 0;
 
     List<String> players = new ArrayList<>();
@@ -72,5 +74,13 @@ public class RemoteServer {
         }
 
         return ret;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 }

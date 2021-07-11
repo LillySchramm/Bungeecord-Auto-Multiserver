@@ -13,3 +13,11 @@ commands:
   getServerInfo:
     description: Returns information about a specific server type.
     permission: bungee.status
+
+  closeserver:
+    description: Closes the active server instance.
+    permission: bungee.opencloseserver
+
+  openserver:
+    description: Opens the active server instance.
+    permission: bungee.opencloseserver
