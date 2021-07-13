@@ -8,16 +8,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.player.PlayerCommandSendEvent;
 
 public class e_OnSignChange implements Listener {
 
     @EventHandler
-    void onSignChange(SignChangeEvent event){
+    void onSignChange(SignChangeEvent event) {
         String[] lines = event.getLines();
         Player player = event.getPlayer();
 
-        if(lines[0].startsWith("Bungee:")){
-            if(player.hasPermission("bungee.editsign")){
+        if (lines[0].startsWith("Bungee:")) {
+            if (player.hasPermission("bungee.editsign")) {
                 String servername = lines[0].replace("Bungee:", "");
 
                 event.setLine(0, ChatColor.GREEN + SignManager.center(servername));
@@ -26,13 +27,10 @@ public class e_OnSignChange implements Listener {
 
                 SignManager.addSign((Sign) event.getBlock().getState());
 
-            }else {
+            } else {
                 player.sendMessage(ChatColor.RED + "You don't have the required permissions to do that.");
                 event.setCancelled(true);
             }
         }
     }
-
-
-
 }

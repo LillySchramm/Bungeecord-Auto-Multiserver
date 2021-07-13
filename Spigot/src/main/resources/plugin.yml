@@ -21,3 +21,9 @@ commands:
   openserver:
     description: Opens the active server instance.
     permission: bungee.opencloseserver
+
+  menu:
+    aliases:
+      - server
+      - m
+    description: Opens a server selection GUI
