@@ -77,7 +77,7 @@ public class GUI_Config {
         customConfig.addDefault("entries", new String[]{
                 "§6PvP;pvp;diamond_sword;3;0;§5Click To Join PvP (§4%s§5)",
                 "§2Survival;survival;grass;4;0;§5Click To Join Survival (§4%s§5)",
-                "§cMinigames;minigames;tnt;5;0;§5Click To Join Minigamess (§4%s§5)"
+                "§cMinigames;minigames;tnt;5;0;§5Click To Join Minigames (§4%s§5)"
         });
         customConfig.options().copyDefaults(true);
     }
