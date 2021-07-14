@@ -28,7 +28,7 @@ This project has more features than just its easy maintainability.
 It also features scripts that automate the entire installation process that also allows you to install 
 [LuckPerms](https://www.spigotmc.org/resources/luckperms.28140/) networkwide (requires an MongoDB-URI). Besides that it also features Auto-Update so that you never have to worry about keeping your network up to date.
 <br>
-For ease of use it also supports teleport-signs. Portals, NPC, GUI and cross-server Inventorysync are yet to come.
+For ease of use it also supports teleport-signs, and an GUI that makes switching server easier than ever. Portals, NPC and cross-server Inventorysync are yet to come.
 
 
 ## Support
@@ -93,10 +93,32 @@ release.__
  - ```/<defaultType>``` sends the player to a server with the type that was defined as default. 
     - No permissions required<br>
 - ```/openserver``` ```/closeserver``` Opens / Closes the current instance. Players can't join closed instances. Closed 
-  instances won't count towards the number shown on shields. Players can still be transferred to closed instances via
+  instances won't count towards the number shown on signs. Players can still be transferred to closed instances via
   ```/changeinstance <player?> <instance>```
     - Requires the ```bungee.opencloseserver``` permission.<br>
+- ```/menu``` opens the server selection GUI.
+    - No permissions required<br>
     
+### GUI
+
+During the initial setup of the server a file called ```GUI.yml``` is generated. It contains the important points 
+required to configure the GUI. <br>
+
+````yaml
+heading: Server Selection
+num_rows: 1
+entries:
+- §6PvP;pvp;diamond_sword;3;0;§5Click To Join PvP (§4%s§5)
+- §2Survival;survival;grass;4;0;§5Click To Join Survival (§4%s§5)
+- §cMinigames;minigames;tnt;5;0;§5Click To Join Minigamess (§4%s§5)
+````
+<br>
+
+```heading``` is the setting that dictates what is shown at the top of the GUI.<br>
+```num_rows``` is the amount of rows that are shown in the GUI. Setting this to 0 disables the GUI. <br>
+```entries``` these are the items shown in the GUI. Syntax is the following: ````<name>;<target>;<item_type>;<x>;<y>;<lore>````
+. Colorcodes can be used.
+
 ### Teleport-Signs
 
 #### Functionality
