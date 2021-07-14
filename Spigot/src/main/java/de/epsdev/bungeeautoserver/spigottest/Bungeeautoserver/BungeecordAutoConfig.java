@@ -6,6 +6,8 @@ import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.*;
 
+import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.config.GUI_Config;
+import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_InventoryChangeEvent;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnBlockInteract;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnSignChange;
 import org.bukkit.Bukkit;
@@ -34,11 +36,15 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getCommand("getServerInfo").setExecutor(new c_getServerInfo());
         getCommand("closeserver").setExecutor(new c_closeserver());
         getCommand("openserver").setExecutor(new c_openserver());
+        getCommand("menu").setExecutor(new c_menu());
 
         // Events
 
         getServer().getPluginManager().registerEvents(new e_OnSignChange(), this);
         getServer().getPluginManager().registerEvents(new e_OnBlockInteract(), this);
+        getServer().getPluginManager().registerEvents(new e_InventoryChangeEvent(), this);
+
+        // Updatess
 
         if(Config.isBungeeReady() && Config.checkUpdate("plugins/BungeecordAutoConfig",
                 "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/sha512/",
@@ -53,6 +59,8 @@ public final class BungeecordAutoConfig extends JavaPlugin {
             EPS_API.key = config.getString("bungee_password");
 
             eps_api.init();
+
+            GUI_Config.init();
 
         }else {
             Bukkit.shutdown();
