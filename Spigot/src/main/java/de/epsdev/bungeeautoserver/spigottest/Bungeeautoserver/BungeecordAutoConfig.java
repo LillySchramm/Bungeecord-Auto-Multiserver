@@ -24,10 +24,6 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         config = getConfig();
         plugin = this;
 
-        // Temp. disable updates while developing
-
-        Config.CheckServerVersion = false;
-
         init_config();
 
         SignManager.loadAllSigns();
