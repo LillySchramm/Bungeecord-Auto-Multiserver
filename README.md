@@ -101,6 +101,10 @@ release.__
     
 ### GUI
 
+![image](https://i.imgur.com/ruAO0lq.png)
+
+<br>
+
 During the initial setup of the server a file called ```GUI.yml``` is generated. It contains the important points 
 required to configure the GUI. <br>
 
