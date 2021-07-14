@@ -1,5 +1,7 @@
 package de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.GUI;
 
+import de.epsdev.bungeeautoserver.api.EPS_API;
+import de.epsdev.bungeeautoserver.api.ServerManager;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -13,15 +15,17 @@ public class Item_Config {
     public final String material_name;
     public final String name;
     public final String lore;
+    public final String target;
 
-    private static final int MAX_CHARS_PER_LINE = 20;
+    private static final int MAX_CHARS_PER_LINE = 26;
 
-    public Item_Config(int x, int y, String material_name, String name, String lore) {
+    public Item_Config(int x, int y, String material_name, String name, String lore, String target) {
         this.x = x;
         this.y = y;
         this.material_name = material_name;
         this.name = name;
         this.lore = lore;
+        this.target = target;
     }
 
     public ItemStack genItemStack(){
@@ -31,14 +35,21 @@ public class Item_Config {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         itemMeta.setDisplayName(name);
-        itemMeta.setLore(toItemDescription(lore));
+
+        List<String> sLore = toItemDescription(lore);
+        itemMeta.setLore(sLore);
 
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
     }
 
-    private static List<String> toItemDescription(String s) {
+    private List<String> toItemDescription(String s) {
+
+        int[] totals = ServerManager.calcTotals(EPS_API.serverInfo.getOrDefault(this.target, new ArrayList<>()));
+
+        s = s.replace("%s", totals[1] + "/" + totals[0]);
+
         List<String> description = new ArrayList<>();
         description.add("");
 

@@ -4,10 +4,10 @@ import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.ServerInfo;
 import de.epsdev.bungeeautoserver.api.ServerManager;
 import de.epsdev.bungeeautoserver.api.packages.RequestServerStatusPackage;
+import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.GUI.Item_Config;
+import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.config.GUI_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
@@ -102,6 +102,16 @@ public class SignManager {
                     sign.update(true);
                 }
             }
+
+            // For the menu
+
+            for (Item_Config item_config : GUI_Config.items_map.values()){
+                if(!searching.contains(item_config.target)){
+                    BungeecordAutoConfig.eps_api.connection.send(new RequestServerStatusPackage(item_config.target));
+                    searching.add(item_config.target);
+                }
+            }
+
         }, 60L, 20L * 2);
     }
 
