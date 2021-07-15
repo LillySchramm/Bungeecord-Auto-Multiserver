@@ -2,15 +2,19 @@ package de.epsdev.plugins.bungee;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.PlayerManager;
+import de.epsdev.bungeeautoserver.api.RemoteServer;
 import de.epsdev.bungeeautoserver.api.ServerManager;
 import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.interfaces.PlayerStatusEmitter;
 import de.epsdev.bungeeautoserver.api.interfaces.ServerStatusEmitter;
+import de.epsdev.bungeeautoserver.api.tools.VersionManagement;
 import de.epsdev.plugins.bungee.commands.c_Instance;
 import de.epsdev.plugins.bungee.commands.c_tpToDefault;
+import de.epsdev.plugins.bungee.events.PingEvent;
 import de.epsdev.plugins.bungee.events.PlayerDisconnectFromProxyEvent;
 import de.epsdev.plugins.bungee.events.PlayerJoinEvent;
+import de.epsdev.plugins.bungee.schedulers.PlayerCountTimer;
 import de.epsdev.plugins.bungee.schedulers.TimeoutScheduler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -53,6 +57,7 @@ public final class Bungee extends Plugin {
 
             getProxy().getPluginManager().registerListener(this,new PlayerJoinEvent());
             getProxy().getPluginManager().registerListener(this,new PlayerDisconnectFromProxyEvent());
+            getProxy().getPluginManager().registerListener(this,new PingEvent());
 
             // Register Commands
 
@@ -93,6 +98,10 @@ public final class Bungee extends Plugin {
             // Cleanup services
 
             TimeoutScheduler.run();
+
+            // Feature services
+
+            PlayerCountTimer.run();
         }else {
             ProxyServer.getInstance().stop();
         }
