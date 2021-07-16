@@ -2,11 +2,7 @@ package de.epsdev.plugins.bungee.events;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.ServerManager;
-<<<<<<< Updated upstream
-=======
 import de.epsdev.bungeeautoserver.api.ban.Ban;
-import de.epsdev.plugins.bungee.Bungee;
->>>>>>> Stashed changes
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;

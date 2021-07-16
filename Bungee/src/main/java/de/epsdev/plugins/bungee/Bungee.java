@@ -34,11 +34,10 @@ import java.util.List;
 public final class Bungee extends Plugin {
 
     public static Plugin plugin;
-<<<<<<< Updated upstream
-=======
+
     public static EPS_API eps_api;
     public static Configuration configuration;
->>>>>>> Stashed changes
+
 
     @Override
     public void onEnable() {
