@@ -2,6 +2,11 @@ package de.epsdev.plugins.bungee.events;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.ServerManager;
+<<<<<<< Updated upstream
+=======
+import de.epsdev.bungeeautoserver.api.ban.Ban;
+import de.epsdev.plugins.bungee.Bungee;
+>>>>>>> Stashed changes
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -17,6 +22,17 @@ public class PlayerJoinEvent implements Listener {
     public void onPostLogin(PostLoginEvent event) {
         ProxiedPlayer proxiedPlayer = event.getPlayer();
 
+        Ban ban = Ban.getBanned(proxiedPlayer.getUniqueId().toString());
+
+        if(ban != null){
+            if(!ban.getBanString().equals("")){
+                proxiedPlayer.disconnect(new ComponentBuilder("You are banned!\nReason: " + ban.reason + " \n"
+                        + ban.getBanString()).color(ChatColor.RED).create());
+
+                return;
+            }
+        }
+
         String server = ServerManager.connectToServer(EPS_API.DEFAULT_SERVER, proxiedPlayer.getDisplayName());
 
         if(server.equals("null")){
@@ -24,6 +40,7 @@ public class PlayerJoinEvent implements Listener {
                     .color(ChatColor.RED).append("\n\n Please try again in a few minutes.").color(ChatColor.YELLOW).bold(true).underlined(true)
                     .create());
         }
+
     }
 
 }
