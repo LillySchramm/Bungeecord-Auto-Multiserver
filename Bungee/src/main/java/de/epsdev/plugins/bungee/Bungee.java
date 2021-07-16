@@ -8,6 +8,7 @@ import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.interfaces.PlayerStatusEmitter;
 import de.epsdev.bungeeautoserver.api.interfaces.ServerStatusEmitter;
+import de.epsdev.bungeeautoserver.api.packages.AnnounceRestartPackage;
 import de.epsdev.bungeeautoserver.api.tools.VersionManagement;
 import de.epsdev.plugins.bungee.commands.c_Instance;
 import de.epsdev.plugins.bungee.commands.c_tpToDefault;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 public final class Bungee extends Plugin {
 
     public static Plugin plugin;
+    public static EPS_API eps_api;
 
     @Override
     public void onEnable() {
@@ -66,7 +68,7 @@ public final class Bungee extends Plugin {
 
             // API stuff
 
-            EPS_API eps_api = new EPS_API(OperationType.SERVER);
+            eps_api = new EPS_API(OperationType.SERVER);
 
             // Connection Management
 
@@ -110,7 +112,7 @@ public final class Bungee extends Plugin {
 
     @Override
     public void onDisable() {
-
+        new AnnounceRestartPackage();
     }
 
     public static void addServer(String name, InetSocketAddress address, String motd, boolean restricted) {
@@ -118,7 +120,6 @@ public final class Bungee extends Plugin {
         System.out.println(EPS_API.PREFIX + "Connected " + name + address.getHostName());
     }
     public static void removeServer(String name) {
-
         ProxyServer.getInstance().getServers().remove(name);
         System.out.println(EPS_API.PREFIX + "Removed " + name);
     }
