@@ -4,6 +4,7 @@ import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.PlayerManager;
 import de.epsdev.bungeeautoserver.api.RemoteServer;
 import de.epsdev.bungeeautoserver.api.ServerManager;
+import de.epsdev.bungeeautoserver.api.ban.Ban;
 import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.interfaces.PlayerStatusEmitter;
@@ -32,16 +33,25 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class Bungee extends Plugin {
 
     public static Plugin plugin;
     public static EPS_API eps_api;
 
+    public static EPS_API eps_api;
+    public static Configuration configuration;
+
+
     @Override
     public void onEnable() {
 
         plugin = this;
+
+        // Temp. disable updates while developing
+        Config.CheckServerVersion = false;
 
         if(Config.isBungeeServerReady() && Config.checkUpdate("plugins/Bungee",
                 "https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/sha512/",
@@ -84,15 +94,34 @@ public final class Bungee extends Plugin {
                 }
             };
 
-            PlayerManager.playerStatusEmitter = (playername, server) -> {
-                ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(playername);
+            PlayerManager.playerStatusEmitter = new PlayerStatusEmitter() {
+                @Override
+                public void onPlayerServerChange(String playername, String servername) {
+                    ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(playername);
 
-                proxiedPlayer.connect(
-                        ProxyServer.getInstance().getServerInfo(server)
-                );
+                    proxiedPlayer.connect(
+                            ProxyServer.getInstance().getServerInfo(servername)
+                    );
 
-                proxiedPlayer.sendMessage(new ComponentBuilder("Sending to " + server + "!")
-                        .color(ChatColor.YELLOW).create());
+                    proxiedPlayer.sendMessage(new ComponentBuilder("Sending to " + servername + "!")
+                            .color(ChatColor.YELLOW).create());
+                }
+
+                @Override
+                public void onPlayerBanned(Ban ban) {
+                    ArrayList<String> raws = new ArrayList<>();
+
+                    for (Ban b : Ban.bans.values()) {
+                        raws.add(b.uuid + ";" + b.until + ";" + b.reason);
+                    }
+
+                    configuration.set("bans", raws);
+                    try {
+                        saveConfig();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             };
 
             eps_api.init();
@@ -146,22 +175,38 @@ public final class Bungee extends Plugin {
                 file.createNewFile();
             }
 
-            Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
+            configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
+
+            if(!configuration.contains("bans")) configuration.set("bans", Arrays.asList("uuid;10;UwU"));
 
             if(configuration.contains("key") && configuration.contains("default_type")){
                 key = configuration.getString("key");
                 default_type = configuration.getString("default_type");
+
+                List<String> raw_bans = configuration.getStringList("bans");
+
+                for (String raw_ban : raw_bans){
+                    String[] fields = raw_ban.split(";");
+
+                    new Ban(fields[0], Integer.parseInt(fields[1]), fields[2]);
+                }
+
             }else {
                 configuration.set("key", key);
                 configuration.set("default_type", default_type);
-                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, new File(getDataFolder(), "config.yml"));
             }
+
+            saveConfig();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return new String[]{key, default_type};
+    }
+
+    public static void saveConfig() throws IOException {
+        ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, new File(Bungee.plugin.getDataFolder(), "config.yml"));
     }
 
 }

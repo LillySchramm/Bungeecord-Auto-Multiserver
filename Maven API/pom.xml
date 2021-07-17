@@ -6,7 +6,7 @@
 
     <groupId>de.eps-dev</groupId>
     <artifactId>bungeeautoserver.api</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 
     <name>BungeecordAutoconfigAPI</name>
     <description>A tool used for automating bungeecord-networks.</description>
