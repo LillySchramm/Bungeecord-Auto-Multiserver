@@ -25,8 +25,8 @@ public class PlayerJoinEvent implements Listener {
 
         if(ban != null){
             if(!ban.getBanString().equals("")){
-                proxiedPlayer.disconnect(new ComponentBuilder("You are banned!\nReason: " + ban.reason + " \n"
-                        + ban.getBanString()).color(ChatColor.RED).create());
+                proxiedPlayer.disconnect(new ComponentBuilder("You are banned!\nReason: " + ban.reason + " \n\n"
+                        ).color(ChatColor.RED).append(ban.getBanString()).color(ChatColor.YELLOW).create());
 
                 return;
             }

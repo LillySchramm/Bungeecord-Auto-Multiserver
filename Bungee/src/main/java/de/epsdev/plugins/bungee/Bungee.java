@@ -29,9 +29,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -104,18 +102,12 @@ public final class Bungee extends Plugin {
 
                 @Override
                 public void onPlayerBanned(Ban ban) {
-                    ArrayList<String> raws = new ArrayList<>();
+                    saveBans();
+                }
 
-                    for (Ban b : Ban.bans.values()) {
-                        raws.add(b.uuid + ";" + b.until + ";" + b.reason);
-                    }
-
-                    configuration.set("bans", raws);
-                    try {
-                        saveConfig();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                @Override
+                public void onPlayerUnbanned(Ban ban) {
+                    saveBans();
                 }
             };
 
@@ -202,6 +194,22 @@ public final class Bungee extends Plugin {
 
     public static void saveConfig() throws IOException {
         ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, new File(Bungee.plugin.getDataFolder(), "config.yml"));
+    }
+
+    public static void saveBans(){
+        ArrayList<String> raws = new ArrayList<>();
+
+        for (Ban b : Ban.bans.values()) {
+            raws.add(b.uuid + ";" + b.until + ";" + b.reason);
+        }
+
+        configuration.set("bans", raws);
+
+        try {
+            saveConfig();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

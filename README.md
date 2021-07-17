@@ -100,7 +100,11 @@ release.__
     - No permissions required<br>
 - ```/broadcast <message>``` sends a message to all active instances.
     - Requires the ```bungee.broadcast``` permission.<br>
-    
+- ````/ban <playername> <ban time (in hours)> <reason>```` bans a player networkwide.
+    - Requires the ```bungee.ban``` permission.<br>
+- ````/unban <playername>```` unbans a player networkwide.
+    - Requires the ```bungee.ban``` permission.<br>
+
 ### GUI
 
 ![image](https://i.imgur.com/ruAO0lq.png)

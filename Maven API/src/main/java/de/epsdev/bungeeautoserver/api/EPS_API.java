@@ -60,6 +60,8 @@ public class EPS_API {
         Package.registerPackage("RequestServerStatusPackage", RequestServerStatusPackage.class);
         Package.registerPackage("RequestServerAvailabilityChangePackage", RequestServerAvailabilityChangePackage.class);
         Package.registerPackage("RequestBroadcastPackage", RequestBroadcastPackage.class);
+        Package.registerPackage("RequestBanPackage", RequestBanPackage.class);
+        Package.registerPackage("RequestUnbanPackage", RequestUnbanPackage.class);
 
         Package.registerPackage("RespondRegisterPackage", RespondRegisterPackage.class);
         Package.registerPackage("RespondServerStatusPackage", RespondServerStatusPackage.class);

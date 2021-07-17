@@ -12,6 +12,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
 public class VersionManagement {
+
+    public static String hash = "";
+
     public static String getSHA512(File file) throws IOException, NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-512");
 
@@ -28,6 +31,9 @@ public class VersionManagement {
         {
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
+
+        hash = sb.toString();
+
         return sb.toString();
     }
 
@@ -61,7 +67,6 @@ public class VersionManagement {
         };
 
         HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-
 
         URL stream = new URL(url);
         BufferedReader in = new BufferedReader(new InputStreamReader(

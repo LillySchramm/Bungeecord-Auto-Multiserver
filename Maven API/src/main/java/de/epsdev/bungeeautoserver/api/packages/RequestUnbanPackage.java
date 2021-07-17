@@ -2,30 +2,26 @@ package de.epsdev.bungeeautoserver.api.packages;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.PlayerManager;
-import de.epsdev.bungeeautoserver.api.RemoteServer;
 import de.epsdev.bungeeautoserver.api.ServerManager;
 import de.epsdev.bungeeautoserver.api.ban.Ban;
+import de.epsdev.bungeeautoserver.api.tools.PlayerManagement;
 import de.epsdev.packages.packages.Base_Package;
 import de.epsdev.packages.packages.Package;
 import de.epsdev.packages.packages.PackageServerError;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class RequestBanPackage extends Package {
-    public RequestBanPackage(Base_Package base_package) {
+public class RequestUnbanPackage extends Package {
+    public RequestUnbanPackage(Base_Package base_package) {
         super(base_package);
     }
 
-    public RequestBanPackage(String uuid, long until, String reason){
-        super("RequestBanPackage");
+    public RequestUnbanPackage(String playername){
+        super("RequestUnbanPackage");
 
         add("key", EPS_API.key);
-
-        add("uuid", uuid);
-        add("until", until);
-        add("reason", reason);
+        add("playername", playername);
     }
 
     @Override
@@ -37,12 +33,13 @@ public class RequestBanPackage extends Package {
                 e.printStackTrace();
             }
         }else {
-            String uuid = getString("uuid");
-            String reason = getString("reason");
+            String playername = getString("playername");
 
-            long until = getLong("until");
+            String uuid = PlayerManagement.getUUID(playername);
 
-            Ban ban = new Ban(uuid, until, reason);
+            Ban ban = Ban.getBanned(uuid);
+            Ban.bans.remove(uuid);
+
             PlayerManager.playerStatusEmitter.onPlayerBanned(ban);
         }
     }
