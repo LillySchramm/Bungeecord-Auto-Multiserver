@@ -50,9 +50,6 @@ public final class Bungee extends Plugin {
 
         plugin = this;
 
-        // Temp. disable updates while developing
-        Config.CheckServerVersion = false;
-
         if(Config.isBungeeServerReady() && Config.checkUpdate("plugins/Bungee",
                 "https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/sha512/",
                 "https://ci.eps-dev.de/job/BungeecordAutoConfig-Bungee/lastSuccessfulBuild/artifact/Bungee/target/Bungee.jar")){
