@@ -41,9 +41,7 @@ public final class Bungee extends Plugin {
     public static Plugin plugin;
     public static EPS_API eps_api;
 
-    public static EPS_API eps_api;
     public static Configuration configuration;
-
 
     @Override
     public void onEnable() {
