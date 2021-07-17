@@ -2,16 +2,21 @@ package de.epsdev.plugins.bungee;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.PlayerManager;
+import de.epsdev.bungeeautoserver.api.RemoteServer;
 import de.epsdev.bungeeautoserver.api.ServerManager;
 import de.epsdev.bungeeautoserver.api.ban.Ban;
 import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.interfaces.PlayerStatusEmitter;
 import de.epsdev.bungeeautoserver.api.interfaces.ServerStatusEmitter;
+import de.epsdev.bungeeautoserver.api.packages.AnnounceRestartPackage;
+import de.epsdev.bungeeautoserver.api.tools.VersionManagement;
 import de.epsdev.plugins.bungee.commands.c_Instance;
 import de.epsdev.plugins.bungee.commands.c_tpToDefault;
+import de.epsdev.plugins.bungee.events.PingEvent;
 import de.epsdev.plugins.bungee.events.PlayerDisconnectFromProxyEvent;
 import de.epsdev.plugins.bungee.events.PlayerJoinEvent;
+import de.epsdev.plugins.bungee.schedulers.PlayerCountTimer;
 import de.epsdev.plugins.bungee.schedulers.TimeoutScheduler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -34,6 +39,7 @@ import java.util.List;
 public final class Bungee extends Plugin {
 
     public static Plugin plugin;
+    public static EPS_API eps_api;
 
     public static EPS_API eps_api;
     public static Configuration configuration;
@@ -63,6 +69,7 @@ public final class Bungee extends Plugin {
 
             getProxy().getPluginManager().registerListener(this,new PlayerJoinEvent());
             getProxy().getPluginManager().registerListener(this,new PlayerDisconnectFromProxyEvent());
+            getProxy().getPluginManager().registerListener(this,new PingEvent());
 
             // Register Commands
 
@@ -71,7 +78,7 @@ public final class Bungee extends Plugin {
 
             // API stuff
 
-            EPS_API eps_api = new EPS_API(OperationType.SERVER);
+            eps_api = new EPS_API(OperationType.SERVER);
 
             // Connection Management
 
@@ -122,6 +129,10 @@ public final class Bungee extends Plugin {
             // Cleanup services
 
             TimeoutScheduler.run();
+
+            // Feature services
+
+            PlayerCountTimer.run();
         }else {
             ProxyServer.getInstance().stop();
         }
@@ -130,7 +141,7 @@ public final class Bungee extends Plugin {
 
     @Override
     public void onDisable() {
-
+        new AnnounceRestartPackage();
     }
 
     public static void addServer(String name, InetSocketAddress address, String motd, boolean restricted) {
@@ -138,7 +149,6 @@ public final class Bungee extends Plugin {
         System.out.println(EPS_API.PREFIX + "Connected " + name + address.getHostName());
     }
     public static void removeServer(String name) {
-
         ProxyServer.getInstance().getServers().remove(name);
         System.out.println(EPS_API.PREFIX + "Removed " + name);
     }

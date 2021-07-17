@@ -22,6 +22,10 @@ commands:
     description: Opens the active server instance.
     permission: bungee.opencloseserver
 
+  broadcast:
+    description: Send an message to all active instances.
+    permission: bungee.broadcast
+
   menu:
     aliases:
       - server

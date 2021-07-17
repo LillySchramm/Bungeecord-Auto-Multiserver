@@ -41,6 +41,7 @@ public class RequestRegisterServerPackage extends Package {
             RemoteServer remoteServer = new RemoteServer(socketAddress, getString("type") , maxPlayers);
 
             try {
+                EPS_API.sockets.add(socket);
                 new RespondRegisterPackage(remoteServer.getName()).send(socket);
             } catch (IOException e) {
                 e.printStackTrace();

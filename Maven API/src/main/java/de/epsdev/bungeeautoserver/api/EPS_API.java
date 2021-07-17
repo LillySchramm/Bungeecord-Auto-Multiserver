@@ -8,8 +8,10 @@ import de.epsdev.packages.Connection;
 import de.epsdev.packages.Server;
 import de.epsdev.packages.packages.Package;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class EPS_API {
 
@@ -20,11 +22,13 @@ public class EPS_API {
 
     private final OperationType operationType;
     private String remoteAddress;
-    private Server server;
+    public Server server;
     public Connection connection;
     private int port = -1;
     private int max_players = 2;
     private String type = "Hub";
+
+    public static List<Socket> sockets = new ArrayList<>();
 
     public static HashMap<String, ArrayList<ServerInfo>> serverInfo = new HashMap<>();
 
@@ -55,8 +59,13 @@ public class EPS_API {
         Package.registerPackage("RequestChangePlayerServerPackage", RequestChangePlayerServerPackage.class);
         Package.registerPackage("RequestServerStatusPackage", RequestServerStatusPackage.class);
         Package.registerPackage("RequestServerAvailabilityChangePackage", RequestServerAvailabilityChangePackage.class);
+        Package.registerPackage("RequestBroadcastPackage", RequestBroadcastPackage.class);
+
         Package.registerPackage("RespondRegisterPackage", RespondRegisterPackage.class);
         Package.registerPackage("RespondServerStatusPackage", RespondServerStatusPackage.class);
+
+        Package.registerPackage("AnnounceBroadcastPackage", AnnounceBroadcastPackage.class);
+        Package.registerPackage("AnnounceRestartPackage", AnnounceRestartPackage.class);
 
         if(this.operationType == OperationType.SERVER){
 

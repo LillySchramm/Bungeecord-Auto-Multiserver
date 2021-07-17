@@ -1,16 +1,17 @@
 package de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
-import de.epsdev.bungeeautoserver.api.ServerManager;
 import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
+import de.epsdev.bungeeautoserver.api.packages.AnnounceBroadcastPackage;
+import de.epsdev.bungeeautoserver.api.packages.AnnounceRestartPackage;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.*;
-
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.config.GUI_Config;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_InventoryChangeEvent;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnBlockInteract;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnSignChange;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,6 +30,21 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         SignManager.loadAllSigns();
         SignManager.startSignUpdateScheduler();
 
+        // Restart Management
+
+        AnnounceRestartPackage.restartEmitter = () -> {
+            System.out.println(EPS_API.PREFIX + "Proxy has restarted.");
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this, Bukkit::shutdown, 20L * 5);
+        };
+
+        // Broadcast Management
+
+        AnnounceBroadcastPackage.broadcastEmitter = message -> {
+            System.out.println(message);
+            getServer().broadcast( ChatColor.RED + "" + ChatColor.BOLD +
+                    " [BROADCAST] " + message, "");
+        };
+
         // Commands
 
         getCommand("changeserver").setExecutor(new c_ChangeServer());
@@ -37,6 +53,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getCommand("closeserver").setExecutor(new c_closeserver());
         getCommand("openserver").setExecutor(new c_openserver());
         getCommand("menu").setExecutor(new c_menu());
+        getCommand("broadcast").setExecutor(new c_broadcast());
 
         // Events
 
@@ -44,7 +61,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new e_OnBlockInteract(), this);
         getServer().getPluginManager().registerEvents(new e_InventoryChangeEvent(), this);
 
-        // Updatess
+        // Updates
 
         if(Config.isBungeeReady() && Config.checkUpdate("plugins/BungeecordAutoConfig",
                 "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/sha512/",

@@ -98,6 +98,8 @@ release.__
     - Requires the ```bungee.opencloseserver``` permission.<br>
 - ```/menu``` opens the server selection GUI.
     - No permissions required<br>
+- ```/broadcast <message>``` sends a message to all active instances.
+    - Requires the ```bungee.broadcast``` permission.<br>
     
 ### GUI
 

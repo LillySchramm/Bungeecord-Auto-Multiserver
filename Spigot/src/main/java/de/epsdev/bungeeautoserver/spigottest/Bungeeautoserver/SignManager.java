@@ -76,42 +76,43 @@ public class SignManager {
 
     public static void startSignUpdateScheduler(){
         Bukkit.getScheduler().scheduleSyncRepeatingTask(BungeecordAutoConfig.plugin, () -> {
+            try {
+                List<String> searching = new ArrayList<>();
 
-            List<String> searching = new ArrayList<>();
+                for (String s_sign : signs){
+                    Sign sign = getBungeeSign(s_sign);
+                    if(sign != null){
+                        String target = getTargetServer(sign);
+                        if(!searching.contains(target)){
+                            BungeecordAutoConfig.eps_api.connection.send(new RequestServerStatusPackage(target));
+                        }
 
-            for (String s_sign : signs){
-                Sign sign = getBungeeSign(s_sign);
-                if(sign != null){
-                    String target = getTargetServer(sign);
-                    if(!searching.contains(target)){
-                        BungeecordAutoConfig.eps_api.connection.send(new RequestServerStatusPackage(target));
+                        int[] totals = ServerManager.calcTotals(EPS_API.serverInfo.getOrDefault(target,
+                                new ArrayList<ServerInfo>()));
+
+                        ChatColor chatColor = ChatColor.GREEN;
+                        String bottomText = ">Click To Join<";
+                        if(totals[0] == totals[1]){
+                            chatColor = ChatColor.DARK_RED;
+                            bottomText = ">FULL<";
+                        }
+
+                        sign.setLine(1, chatColor + center(totals[1] + "/" + totals[0]));
+                        sign.setLine(3, chatColor + center(bottomText));
+                        sign.update(true);
                     }
+                }
 
-                    int[] totals = ServerManager.calcTotals(EPS_API.serverInfo.getOrDefault(target,
-                            new ArrayList<ServerInfo>()));
+                // For the menu
 
-                    ChatColor chatColor = ChatColor.GREEN;
-                    String bottomText = ">Click To Join<";
-                    if(totals[0] == totals[1]){
-                        chatColor = ChatColor.DARK_RED;
-                        bottomText = ">FULL<";
+                for (Item_Config item_config : GUI_Config.items_map.values()){
+                    if(!searching.contains(item_config.target)){
+                        BungeecordAutoConfig.eps_api.connection.send(new RequestServerStatusPackage(item_config.target));
+                        searching.add(item_config.target);
                     }
-
-                    sign.setLine(1, chatColor + center(totals[1] + "/" + totals[0]));
-                    sign.setLine(3, chatColor + center(bottomText));
-                    sign.update(true);
                 }
-            }
 
-            // For the menu
-
-            for (Item_Config item_config : GUI_Config.items_map.values()){
-                if(!searching.contains(item_config.target)){
-                    BungeecordAutoConfig.eps_api.connection.send(new RequestServerStatusPackage(item_config.target));
-                    searching.add(item_config.target);
-                }
-            }
-
+            }catch (Exception ignored){}
         }, 60L, 20L * 2);
     }
 
