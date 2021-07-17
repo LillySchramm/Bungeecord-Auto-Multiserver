@@ -1,11 +1,9 @@
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
+import de.epsdev.bungeeautoserver.api.tools.PlayerManagement;
 
 public class Test {
     public static void main(String args[]){
-        EPS_API eps_api = new EPS_API(OperationType.CLIENT);
-        eps_api.setRemoteAddress("raspberrypi");
-
-        eps_api.init();
+        System.out.println(PlayerManagement.getUUID("eps_dev"));
     }
 }

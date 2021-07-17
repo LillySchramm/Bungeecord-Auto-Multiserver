@@ -32,23 +32,23 @@ public class Ban {
 
         double months = Math.floor(delta / (60 * 60 * 24 * 30));
         if (months != 0){
-            ret += (int) months + " Month(s) ";
+            ret += (int) months + " m ";
         }
         delta -= months * (60 * 60 * 24 * 30);
 
         double days = Math.floor(delta / (60 * 60 * 24));
         delta -= days * (60 * 60 * 24);
-        ret += (int) days  + " Day(s) ";
+        ret += (int) days  + " d ";
 
         double hours = Math.floor(delta / (60 * 60));
         delta -= hours * (60 * 60);
-        ret += (int) hours + " Hour(s) ";
+        ret += (int) hours + " h ";
 
         double minutes = Math.floor(delta / 60);
         delta -= minutes * 60;
-        ret += (int) minutes + " Minute(s) ";
+        ret += (int) minutes + " min ";
 
-        ret += (int) delta + " Second(s) ";
+        ret += (int) delta + " s ";
 
         return ret;
     }

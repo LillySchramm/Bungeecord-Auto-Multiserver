@@ -26,6 +26,19 @@ commands:
     description: Send an message to all active instances.
     permission: bungee.broadcast
 
+  ban:
+    description: Ban a player from the network for a specified time.
+    permission: bungee.ban
+
+  unban:
+    description: Remove a players network-ban.
+    permission: bungee.ban
+    aliases:
+      - pardon
+      -
+  uwu:
+    description: Shows the current versions hash.
+
   menu:
     aliases:
       - server
