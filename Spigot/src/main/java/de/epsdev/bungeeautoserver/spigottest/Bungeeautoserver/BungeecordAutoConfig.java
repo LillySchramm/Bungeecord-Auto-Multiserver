@@ -56,6 +56,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getCommand("broadcast").setExecutor(new c_broadcast());
         getCommand("ban").setExecutor(new c_ban());
         getCommand("unban").setExecutor(new c_unban());
+        getCommand("uwu").setExecutor(new c_uwu());
 
 
         // Events
