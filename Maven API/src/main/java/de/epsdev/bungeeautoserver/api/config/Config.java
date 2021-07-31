@@ -24,9 +24,10 @@ public class Config {
     }
 
     public static boolean checkUpdate(String filename, String sha_url, String download_url){
+
         File file = new File(System.getProperty("user.dir") + "/server.sh");
 
-        if(!CheckServerVersion) return true;
+        if(CheckServerVersion) return true;
 
         if(file.exists() && readFile(file).get(0).contains("Installed via script")){
             System.out.println(EPS_API.PREFIX + "Checking for updates... ");

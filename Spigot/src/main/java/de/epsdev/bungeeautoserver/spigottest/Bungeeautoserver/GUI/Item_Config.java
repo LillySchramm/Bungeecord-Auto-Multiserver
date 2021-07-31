@@ -35,6 +35,7 @@ public class Item_Config {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         itemMeta.setDisplayName(name);
+        itemMeta.getItemFlags()
 
         List<String> sLore = toItemDescription(lore);
         itemMeta.setLore(sLore);
