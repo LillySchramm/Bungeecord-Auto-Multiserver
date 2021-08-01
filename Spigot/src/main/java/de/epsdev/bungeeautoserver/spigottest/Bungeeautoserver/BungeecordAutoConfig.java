@@ -3,8 +3,11 @@ package de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver;
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
+import de.epsdev.bungeeautoserver.api.interfaces.SyncInventoryEventEmitter;
 import de.epsdev.bungeeautoserver.api.packages.AnnounceBroadcastPackage;
 import de.epsdev.bungeeautoserver.api.packages.AnnounceRestartPackage;
+import de.epsdev.bungeeautoserver.api.sync.SyncInventory;
+import de.epsdev.bungeeautoserver.api.tools.SyncInventoryManagement;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.*;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.config.GUI_Config;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_InventoryChangeEvent;
@@ -14,6 +17,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.UUID;
 
 public final class BungeecordAutoConfig extends JavaPlugin {
     public static FileConfiguration config;
@@ -43,6 +48,23 @@ public final class BungeecordAutoConfig extends JavaPlugin {
             System.out.println(message);
             getServer().broadcast( ChatColor.RED + "" + ChatColor.BOLD +
                     " [BROADCAST] " + message, "");
+        };
+
+        // InventorySync Management
+
+        SyncInventoryManagement.emitter = new SyncInventoryEventEmitter() {
+            @Override
+            public void save() {} // Ignored just for MainServer
+
+            @Override
+            public void sync(SyncInventory inventory) {
+                PlayerInventoryManager.setPlayerInventory(inventory);
+            }
+
+            @Override
+            public SyncInventory getSyncInventoryServerSide(String uuid) {
+                return PlayerInventoryManager.getPlayerSyncInventory(Bukkit.getPlayer(UUID.fromString(uuid)));
+            }
         };
 
         // Commands
@@ -78,6 +100,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
             eps_api.setType(config.getString("server_type"));
 
             EPS_API.key = config.getString("bungee_password");
+            SyncInventoryManagement.ChannelName = config.getString("inventory_sync_channel");
 
             eps_api.init();
 
@@ -98,6 +121,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         config.addDefault("bungee_password", "");
         config.addDefault("server_type", "Hub");
         config.addDefault("signs", new String[0]);
+        config.addDefault("inventory_sync_channel", "");
 
         config.options().copyDefaults(true);
 

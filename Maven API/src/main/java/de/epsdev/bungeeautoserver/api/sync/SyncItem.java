@@ -17,6 +17,8 @@ public class SyncItem {
     public int health = 0;
 
     public ArrayList<String> flags = new ArrayList<>();
+
+    public HashMap<Integer, SyncItem> itemStorage = new HashMap<>(); // Just for shulkerboxes
     public HashMap<String, Integer> enchantments = new HashMap<>();
 
     private final Type FLAGS_TYPE = new TypeToken<ArrayList<String>>(){}.getType();
@@ -39,6 +41,12 @@ public class SyncItem {
             JSONObject o = jsonArray.getJSONObject(i);
             this.enchantments.put(o.getString("name"), o.getInt("level"));
         }
+
+        jsonArray = json.getJSONArray("item_storage");
+        for (int i = 0; i < jsonArray.length(); i++){
+            JSONObject o = jsonArray.getJSONObject(i);
+            this.itemStorage.put(o.getInt("pos"), new SyncItem(o.getJSONObject("data")));
+        }
     }
 
     public JSONObject toJSONObject() {
@@ -48,17 +56,29 @@ public class SyncItem {
         jsonObject.put("type", type);
         jsonObject.put("health", health);
 
-        ArrayList<JSONObject> objs = new ArrayList<>();
+        ArrayList<JSONObject> enchantment_objs = new ArrayList<>();
         enchantments.forEach((k,v) -> {
             JSONObject o = new JSONObject();
 
             o.put("name", k);
             o.put("level", v);
 
-            objs.add(o);
+            enchantment_objs.add(o);
         });
 
-        jsonObject.put("enchantments",objs);
+        ArrayList<JSONObject> itemStorage_objs = new ArrayList<>();
+        itemStorage.forEach((k,v) -> {
+            JSONObject o = new JSONObject();
+
+            o.put("pos", k);
+            o.put("data", v);
+
+            enchantment_objs.add(o);
+        });
+
+
+        jsonObject.put("enchantments",enchantment_objs);
+        jsonObject.put("item_storage",itemStorage_objs);
         jsonObject.put("flags", flags);
 
         return jsonObject;

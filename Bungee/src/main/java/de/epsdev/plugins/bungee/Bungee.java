@@ -9,7 +9,10 @@ import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.interfaces.PlayerStatusEmitter;
 import de.epsdev.bungeeautoserver.api.interfaces.ServerStatusEmitter;
+import de.epsdev.bungeeautoserver.api.interfaces.SyncInventoryEventEmitter;
 import de.epsdev.bungeeautoserver.api.packages.AnnounceRestartPackage;
+import de.epsdev.bungeeautoserver.api.sync.SyncInventory;
+import de.epsdev.bungeeautoserver.api.tools.SyncInventoryManagement;
 import de.epsdev.bungeeautoserver.api.tools.VersionManagement;
 import de.epsdev.plugins.bungee.commands.c_Instance;
 import de.epsdev.plugins.bungee.commands.c_tpToDefault;
@@ -109,6 +112,23 @@ public final class Bungee extends Plugin {
                 public void onPlayerUnbanned(Ban ban) {
                     saveBans();
                 }
+            };
+
+            SyncInventoryManagement.emitter = new SyncInventoryEventEmitter() {
+                @Override
+                public void save() {
+                    try {
+                        saveConfig();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void sync(SyncInventory inventory) {} // Ignored. Just for GameServers
+
+                @Override
+                public SyncInventory getSyncInventoryServerSide(String uuid) { return null; } // Ignored. Just for GameServers
             };
 
             eps_api.init();

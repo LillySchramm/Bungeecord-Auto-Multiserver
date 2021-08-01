@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SyncInventory {
-    private HashMap<Integer, SyncItem> items = new HashMap<>();
+    public HashMap<Integer, SyncItem> items = new HashMap<>();
     public final String uuid;
 
     public SyncInventory(JSONObject jsonObject){

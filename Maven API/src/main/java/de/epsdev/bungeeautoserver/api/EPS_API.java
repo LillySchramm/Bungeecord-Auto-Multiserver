@@ -62,9 +62,12 @@ public class EPS_API {
         Package.registerPackage("RequestBroadcastPackage", RequestBroadcastPackage.class);
         Package.registerPackage("RequestBanPackage", RequestBanPackage.class);
         Package.registerPackage("RequestUnbanPackage", RequestUnbanPackage.class);
+        Package.registerPackage("RequestSaveSyncInventoryPackage", RequestSaveSyncInventoryPackage.class);
+        Package.registerPackage("RequestGetSyncInventoryPackage", RequestGetSyncInventoryPackage.class);
 
         Package.registerPackage("RespondRegisterPackage", RespondRegisterPackage.class);
         Package.registerPackage("RespondServerStatusPackage", RespondServerStatusPackage.class);
+        Package.registerPackage("RespondGetSyncInventoryPackage", RespondGetSyncInventoryPackage.class);
 
         Package.registerPackage("AnnounceBroadcastPackage", AnnounceBroadcastPackage.class);
         Package.registerPackage("AnnounceRestartPackage", AnnounceRestartPackage.class);

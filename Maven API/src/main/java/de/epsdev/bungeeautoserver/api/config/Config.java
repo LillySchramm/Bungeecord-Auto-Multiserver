@@ -27,6 +27,7 @@ public class Config {
 
         File file = new File(System.getProperty("user.dir") + "/server.sh");
 
+        // TODO: if(!CheckServerVersion) return true; once debugging ended
         if(CheckServerVersion) return true;
 
         if(file.exists() && readFile(file).get(0).contains("Installed via script")){
