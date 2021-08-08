@@ -68,7 +68,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         // Updates
 
         if(Config.isBungeeReady() && Config.checkUpdate("plugins/BungeecordAutoConfig",
-                "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/sha512/",
+                "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/sha512",
                 "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/BungeecordAutoConfig.jar")){
 
             eps_api = new EPS_API(OperationType.CLIENT);
