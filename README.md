@@ -10,7 +10,8 @@ An easy way to start and maintain a bungeecord network.
 2. Usage
 3. Installation <br>
    3.1 Automated <br>
-   3.2 Manual <br>
+   3.2 Docker <br>
+   3.3 Manual <br>
 4. Updating
 5. Common problems
 6. Contributing
@@ -210,7 +211,25 @@ Repeat this progress for every gameserver you want to set up.
 Congrats, you're done! Try connecting to your proxy server via Minecraft.
 ----
 
-### 3.2 Manual
+### 3.2 Docker
+
+#### The bungee proxy
+    
+Download the Dockerfile [here](https://raw.githubusercontent.com/EliasSchramm/Bungeecord-Auto-Multiserver/main/docker/bungee/Dockerfile)<br>
+Change the first few lines to match your desired config. <br>
+Build it. <br>
+Remember to forward the ports ```10101``` and ```25565``` when running the container.<br>
+
+
+#### The game server
+    
+Download the Dockerfile [here](https://raw.githubusercontent.com/EliasSchramm/Bungeecord-Auto-Multiserver/main/docker/minecraft/Dockerfile) <br>
+Change the first few lines to match your desired config. <br>
+Build it. <br>
+Remember to forward the servers port when running the container.<br>
+
+  
+### 3.3 Manual
 
 #### The bungee proxy
 
