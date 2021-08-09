@@ -1,12 +1,15 @@
 # For the Bungee Server
 
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
 ENV PASSWORD=""
 ENV DEFAULT_SERVER="Hub"
 
 WORKDIR /server
 
+RUN apt update
+RUN apt-get install software-properties-common -y
+RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt update
 RUN apt install openjdk-16-jre-headless wget -y
 

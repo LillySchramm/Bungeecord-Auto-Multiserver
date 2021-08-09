@@ -1,6 +1,6 @@
 # For the minecraft/client server
 
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
 WORKDIR /server
 
@@ -11,15 +11,20 @@ ENV BUNGEE_PASSWORD=""
 
 ENV SERVER_PORT=30000
 ENV SERVER_TYPE="Hub"
-ENV SERVER_PLAYER_MAX=20
-ENV SERVER_VIEW_MAX=10
-ENV SERVER_RAM=2500
+ENV SERVER_PLAYER_MAX=40
+ENV SERVER_VIEW_MAX=8
+ENV SERVER_RAM=1500
 
 ENV MONGO_URI="mongodb://"
 
 ENV JAVA_8="/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java"
 ENV JAVA_16="/usr/lib/jvm/java-1.16.0-openjdk-amd64/bin/java"
 
+COPY world world
+
+RUN apt update
+RUN apt-get install software-properties-common -y
+RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt update
 RUN apt install openjdk-16-jre-headless -y
 RUN apt install openjdk-8-jre-headless -y
@@ -40,8 +45,7 @@ RUN echo '    JAVA=$JAVA_16            '                                        
 RUN echo 'fi'                                                                                                           >> temp.sh
 RUN echo ''                                                                                                             >> temp.sh
 RUN echo 'echo "#Installed via script"                                                                    >> server.sh' >> temp.sh
-RUN echo 'echo "cd plugins && rm BungeecordAutoConfig.jar && wget https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/BungeecordAutoConfig.jar" >> server.sh' >> temp.sh
-RUN echo 'echo "sha512sum BungeecordAutoConfig.jar"                                                                                >> server.sh' >> temp.sh
+RUN echo 'echo "sha512sum BungeecordAutoConfig.jar"                                                       >> server.sh' >> temp.sh
 RUN echo 'echo "cd ${PWD}"                                                                                >> server.sh' >> temp.sh
 RUN echo 'echo "while true; do"                                                                           >> server.sh' >> temp.sh
 RUN echo 'echo "  ${JAVA} -Xmx${SERVER_RAM}M -Xms${SERVER_RAM}M -jar spigot-${VERSION}.jar"               >> server.sh' >> temp.sh
