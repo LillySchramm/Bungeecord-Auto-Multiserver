@@ -145,7 +145,7 @@ if [ -z ${URI+x} ];
 then
     echo "Skiping Luckyperms setup."
 else
-    wget https://ci.lucko.me/job/LuckPerms/1348/artifact/bukkit/loader/build/libs/LuckPerms-Bukkit-5.3.50.jar
+    wget https://ci.lucko.me/job/LuckPerms/1368/artifact/bukkit/loader/build/libs/LuckPerms-Bukkit-5.3.69.jar
 
     mkdir LuckPerms
     cd LuckPerms

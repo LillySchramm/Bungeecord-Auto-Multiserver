@@ -118,7 +118,7 @@ RUN echo "bungee_password: '${BUNGEE_PASSWORD}'"    >> plugins/BungeecordAutoCon
 RUN echo "server_type: '${SERVER_TYPE}'"            >> plugins/BungeecordAutoConfig/config.yml
 RUN echo "signs: []"                                >> plugins/BungeecordAutoConfig/config.yml
 
-RUN cd plugins && wget https://ci.lucko.me/job/LuckPerms/1348/artifact/bukkit/loader/build/libs/LuckPerms-Bukkit-5.3.50.jar &&\
+RUN cd plugins && wget https://ci.lucko.me/job/LuckPerms/1368/artifact/bukkit/loader/build/libs/LuckPerms-Bukkit-5.3.69.jar &&\
     mkdir LuckPerms && cd LuckPerms &&\
     wget -O config.yml https://pastebin.com/raw/6uibygMb &&\
     sed -i "s#plsreplace#${MONGO_URI}#g" config.yml
