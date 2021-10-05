@@ -41,7 +41,6 @@ public class VersionManagement {
         URL url = new URL(download_url);
         ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
         FileOutputStream fileOutputStream = new FileOutputStream(file + ".jar");
-        FileChannel fileChannel = fileOutputStream.getChannel();
         fileOutputStream.getChannel()
                 .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
     }
