@@ -34,6 +34,13 @@ public class EPS_API {
     private int max_players = 2;
     private String type = "Hub";
 
+    public static String ftpServerAddress = "";
+    public static int ftpServerPort = 0;
+    public static String ftpServerUser = "";
+    public static String ftpServerPassword = "";
+
+    public static String backupChannelName = "World1";
+
     public static List<Socket> sockets = new ArrayList<>();
 
     public static HashMap<String, ArrayList<ServerInfo>> serverInfo = new HashMap<>();
