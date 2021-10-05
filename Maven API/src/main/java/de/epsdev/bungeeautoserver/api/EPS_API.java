@@ -16,6 +16,12 @@ import java.util.List;
 public class EPS_API {
 
     public static final String PREFIX = "[Auto Bungee] ";
+    private final String LOGO = "\n _______                  ______                               \n" +
+                                "(_______)        _       / _____)                              \n" +
+                                " _______ _   _ _| |_ ___( (____  _____  ____ _   _ _____  ____ \n" +
+                                "|  ___  | | | (_   _) _ \\\\____ \\| ___ |/ ___) | | | ___ |/ ___)\n" +
+                                "| |   | | |_| | | || |_| |____) ) ____| |    \\ V /| ____| |    \n" +
+                                "|_|   |_|____/   \\__)___(______/|_____)_|     \\_/ |_____)_|    \n\n";
 
     public static String NAME = "iAmADefault";
     public static String DEFAULT_SERVER = "Hub";
@@ -55,6 +61,9 @@ public class EPS_API {
     }
 
     public void init(){
+
+        System.out.print(LOGO);
+
         Package.registerPackage("RequestRegisterServerPackage", RequestRegisterServerPackage.class);
         Package.registerPackage("RequestChangePlayerServerPackage", RequestChangePlayerServerPackage.class);
         Package.registerPackage("RequestServerStatusPackage", RequestServerStatusPackage.class);
