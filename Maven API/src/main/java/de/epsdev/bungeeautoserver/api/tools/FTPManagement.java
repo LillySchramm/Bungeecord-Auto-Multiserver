@@ -7,12 +7,8 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FTPManagement {
 
@@ -42,17 +38,18 @@ public class FTPManagement {
         ftpsClient.makeDirectory(BACKUP_DIRECTORY_NAME);
         ftpsClient.changeWorkingDirectory(BACKUP_DIRECTORY_NAME);
         ftpsClient.makeDirectory(EPS_API.backupChannelName);
-        ftpsClient.changeWorkingDirectory(EPS_API.backupChannelName);
 
+        ftpsClient.changeWorkingDirectory(EPS_API.backupChannelName);
         for (String folder : WORLD_FOLDER_NAMES) ftpsClient.makeDirectory(folder);
+        ftpsClient.changeWorkingDirectory("../");
     }
 
-    private static ArrayList<String> listFilesInDirectory(FTPSClient ftpsClient, String directory) throws IOException {
+    private static  ArrayList<String> listFilesInRemoteDirectory(FTPSClient ftpsClient, String directory) throws IOException {
         ArrayList<String> files = new ArrayList<>();
 
         for (FTPFile file : ftpsClient.listFiles(directory)){
             if (file.isDirectory()) {
-                files.addAll(listFilesInDirectory(ftpsClient,directory + "/" + file.getName()));
+                files.addAll(listFilesInRemoteDirectory(ftpsClient,directory + "/" + file.getName()));
                 continue;
             }
 
@@ -61,6 +58,27 @@ public class FTPManagement {
 
         return files;
     }
+
+    private static ArrayList<String>[] listFilesInLocalDirectory(File folder) throws IOException {
+        ArrayList<String> files = new ArrayList<>();
+        ArrayList<String> directories = new ArrayList<>();
+        directories.add(folder.toString().replace("\\", "/"));
+
+        if (folder.listFiles() == null) return new ArrayList[]{files, directories};
+
+        for (File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                ArrayList<String>[] __ = listFilesInLocalDirectory(fileEntry);
+                files.addAll(__[0]);
+                directories.addAll(__[1]);
+            } else {
+                files.add(folder + "/" + fileEntry.getName());
+            }
+        }
+
+        return new ArrayList[]{files, directories};
+    }
+
 
     public static void downloadWorld(String serverAddress, int serverPort,
                                      String username, String password) throws IOException {
@@ -73,12 +91,13 @@ public class FTPManagement {
          */
 
         ftpsClient.enterLocalPassiveMode();
+        ftpsClient.changeWorkingDirectory(EPS_API.backupChannelName);
 
         for (String folder : WORLD_FOLDER_NAMES) {
             File file = new File(folder);
             FileUtils.deleteDirectory(file);
 
-            for (String remoteFile : listFilesInDirectory(ftpsClient, folder)){
+            for (String remoteFile : listFilesInRemoteDirectory(ftpsClient, folder)){
                 FileUtils.touch(new File(remoteFile));
                 new FileOutputStream("./" + remoteFile);
 
@@ -90,4 +109,49 @@ public class FTPManagement {
         ftpsClient.disconnect();
     }
 
+    private static void deleteRemoteDirectory(FTPSClient ftpsClient, String path) throws IOException {
+        FTPFile[] files= ftpsClient.listFiles(path);
+        if (files.length > 0) {
+            for (FTPFile ftpFile : files) {
+                if (ftpFile.isDirectory()){
+                    deleteRemoteDirectory(ftpsClient, path + "/" + ftpFile.getName());
+                }
+                else {
+                    String deleteFilePath = path + "/" + ftpFile.getName();
+                    ftpsClient.deleteFile(deleteFilePath);
+                }
+            }
+        }
+
+        ftpsClient.removeDirectory(path);
+    }
+
+    public static void uploadWorld(String serverAddress, int serverPort,
+                                     String username, String password) throws Exception {
+
+        FTPSClient ftpsClient = openFTPSClient(serverAddress, serverPort, username, password);
+        initFileStructure(ftpsClient);
+
+        ftpsClient.enterLocalPassiveMode();
+
+        // Create Temporary Folder
+        ftpsClient.makeDirectory(EPS_API.backupChannelName + "_temp");
+        ftpsClient.changeWorkingDirectory("./" + EPS_API.backupChannelName + "_temp");
+
+        for (String folder : WORLD_FOLDER_NAMES) {
+            ArrayList<String>[] __ = listFilesInLocalDirectory(new File(folder));
+
+            for (String _folder : __[1]) ftpsClient.makeDirectory("./" + _folder);
+
+            for (String localFile : __[0]){
+                localFile = localFile.replace("\\", "/");
+                System.out.println("./" + localFile);
+                ftpsClient.storeFile("./" + localFile, new FileInputStream(localFile));
+            }
+        }
+
+        ftpsClient.changeWorkingDirectory("../");
+        deleteRemoteDirectory(ftpsClient, "./" + EPS_API.backupChannelName);
+        ftpsClient.rename("./" + EPS_API.backupChannelName + "_temp", "./" + EPS_API.backupChannelName);
+    }
 }
