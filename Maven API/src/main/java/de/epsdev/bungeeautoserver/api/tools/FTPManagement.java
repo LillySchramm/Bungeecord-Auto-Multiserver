@@ -4,6 +4,7 @@ import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.interfaces.FTPStatusEmitter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.PrintCommandListener;
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
@@ -41,6 +42,7 @@ public class FTPManagement {
 
         client.connect(serverAddress, serverPort);
         client.execPROT("P");
+
         int reply = client.getReplyCode();
         if (!FTPReply.isPositiveCompletion(reply)) {
             client.disconnect();
@@ -48,6 +50,7 @@ public class FTPManagement {
         }
 
         client.login(username, password);
+        client.setFileType(FTP.BINARY_FILE_TYPE);
 
         return client;
     }
