@@ -113,6 +113,7 @@ public class EPS_API {
                 this.connection = new Connection(remoteAddress, 10101);
                 this.connection.start();
 
+                EPS_API.backupChannelName = this.type;
                 this.connection.send(new RequestRegisterServerPackage(this.port, this.type, this.max_players));
 
             } catch (NoRemoteAddressException | NoPortDefinedException e) {
