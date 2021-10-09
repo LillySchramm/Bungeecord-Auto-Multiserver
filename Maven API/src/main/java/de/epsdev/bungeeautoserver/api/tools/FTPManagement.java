@@ -1,6 +1,7 @@
 package de.epsdev.bungeeautoserver.api.tools;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
+import de.epsdev.bungeeautoserver.api.interfaces.FTPStatusEmitter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTPFile;
@@ -14,6 +15,23 @@ public class FTPManagement {
 
     public static final String BACKUP_DIRECTORY_NAME = "MINECRAFT_BACKUP";
     public static final String[] WORLD_FOLDER_NAMES = new String[]{"world", "world_nether", "world_the_end"};
+
+    public static FTPStatusEmitter ftpStatusEmitter = new FTPStatusEmitter() {
+        @Override
+        public void startDownload(String directoryName) {}
+
+        @Override
+        public void startUpload(String directoryName) {}
+
+        @Override
+        public void finishDownload(long size) {}
+
+        @Override
+        public void finishUpload(long size) {}
+
+        @Override
+        public void finishTotal(long totalSize) {}
+    };
 
     public static FTPSClient openFTPSClient(String serverAddress, int serverPort,
                                              String username, String password) throws IOException {
@@ -44,7 +62,8 @@ public class FTPManagement {
         ftpsClient.changeWorkingDirectory("../");
     }
 
-    private static  ArrayList<String> listFilesInRemoteDirectory(FTPSClient ftpsClient, String directory) throws IOException {
+    private static ArrayList<String> listFilesInRemoteDirectory(FTPSClient ftpsClient, String directory)
+            throws IOException {
         ArrayList<String> files = new ArrayList<>();
 
         for (FTPFile file : ftpsClient.listFiles(directory)){
@@ -93,19 +112,65 @@ public class FTPManagement {
         ftpsClient.enterLocalPassiveMode();
         ftpsClient.changeWorkingDirectory(EPS_API.backupChannelName);
 
+        long totalSize = 0;
         for (String folder : WORLD_FOLDER_NAMES) {
             File file = new File(folder);
             FileUtils.deleteDirectory(file);
 
             for (String remoteFile : listFilesInRemoteDirectory(ftpsClient, folder)){
+                ftpStatusEmitter.startDownload(remoteFile);
+
                 FileUtils.touch(new File(remoteFile));
                 new FileOutputStream("./" + remoteFile);
 
                 ftpsClient.retrieveFile(remoteFile,
                         new FileOutputStream("./" + remoteFile));
+
+                long size = new File("./" + remoteFile).length();
+                totalSize += size;
+                ftpStatusEmitter.finishDownload(size);
             }
         }
 
+        ftpStatusEmitter.finishTotal(totalSize);
+        ftpsClient.disconnect();
+    }
+
+    public static void uploadWorld(String serverAddress, int serverPort,
+                                     String username, String password) throws Exception {
+
+        FTPSClient ftpsClient = openFTPSClient(serverAddress, serverPort, username, password);
+        initFileStructure(ftpsClient);
+
+        ftpsClient.enterLocalPassiveMode();
+
+        // Create Temporary Folder
+        ftpsClient.makeDirectory(EPS_API.backupChannelName + "_temp");
+        ftpsClient.changeWorkingDirectory("./" + EPS_API.backupChannelName + "_temp");
+
+        long totalSize = 0;
+        for (String folder : WORLD_FOLDER_NAMES) {
+            ArrayList<String>[] __ = listFilesInLocalDirectory(new File(folder));
+
+            for (String _folder : __[1]) ftpsClient.makeDirectory("./" + _folder);
+
+            for (String localFile : __[0]){
+                ftpStatusEmitter.startUpload(localFile);
+
+                localFile = localFile.replace("\\", "/");
+                ftpsClient.storeFile("./" + localFile, new FileInputStream(localFile));
+
+                long size = new File(localFile).length();
+                totalSize += size;
+                ftpStatusEmitter.finishUpload(size);
+            }
+        }
+
+        ftpsClient.changeWorkingDirectory("../");
+        deleteRemoteDirectory(ftpsClient, "./" + EPS_API.backupChannelName);
+        ftpsClient.rename("./" + EPS_API.backupChannelName + "_temp", "./" + EPS_API.backupChannelName);
+
+        ftpStatusEmitter.finishTotal(totalSize);
         ftpsClient.disconnect();
     }
 
@@ -124,34 +189,5 @@ public class FTPManagement {
         }
 
         ftpsClient.removeDirectory(path);
-    }
-
-    public static void uploadWorld(String serverAddress, int serverPort,
-                                     String username, String password) throws Exception {
-
-        FTPSClient ftpsClient = openFTPSClient(serverAddress, serverPort, username, password);
-        initFileStructure(ftpsClient);
-
-        ftpsClient.enterLocalPassiveMode();
-
-        // Create Temporary Folder
-        ftpsClient.makeDirectory(EPS_API.backupChannelName + "_temp");
-        ftpsClient.changeWorkingDirectory("./" + EPS_API.backupChannelName + "_temp");
-
-        for (String folder : WORLD_FOLDER_NAMES) {
-            ArrayList<String>[] __ = listFilesInLocalDirectory(new File(folder));
-
-            for (String _folder : __[1]) ftpsClient.makeDirectory("./" + _folder);
-
-            for (String localFile : __[0]){
-                localFile = localFile.replace("\\", "/");
-                System.out.println("./" + localFile);
-                ftpsClient.storeFile("./" + localFile, new FileInputStream(localFile));
-            }
-        }
-
-        ftpsClient.changeWorkingDirectory("../");
-        deleteRemoteDirectory(ftpsClient, "./" + EPS_API.backupChannelName);
-        ftpsClient.rename("./" + EPS_API.backupChannelName + "_temp", "./" + EPS_API.backupChannelName);
     }
 }
