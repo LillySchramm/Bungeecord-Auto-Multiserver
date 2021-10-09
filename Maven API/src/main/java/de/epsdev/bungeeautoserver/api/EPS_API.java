@@ -39,7 +39,7 @@ public class EPS_API {
     public static String ftpServerUser = "";
     public static String ftpServerPassword = "";
 
-    public static String backupChannelName = "World1";
+    public static String backupChannelName = "";
 
     public static List<Socket> sockets = new ArrayList<>();
 
