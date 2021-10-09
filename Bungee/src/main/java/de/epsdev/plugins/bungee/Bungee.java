@@ -166,6 +166,11 @@ public final class Bungee extends Plugin {
 
             if(!configuration.contains("bans")) configuration.set("bans", Arrays.asList("uuid;10;UwU"));
 
+            if(!configuration.contains("ftp_server_address")) configuration.set("ftp_server_address", "");
+            if(!configuration.contains("ftp_server_port")) configuration.set("ftp_server_port", 21);
+            if(!configuration.contains("ftp_server_user")) configuration.set("ftp_server_user", "");
+            if(!configuration.contains("ftp_server_password")) configuration.set("ftp_server_password", "");
+
             if(configuration.contains("key") && configuration.contains("default_type")){
                 key = configuration.getString("key");
                 default_type = configuration.getString("default_type");
@@ -178,12 +183,17 @@ public final class Bungee extends Plugin {
                     new Ban(fields[0], Integer.parseInt(fields[1]), fields[2]);
                 }
 
-            }else {
+            } else {
                 configuration.set("key", key);
                 configuration.set("default_type", default_type);
             }
 
             saveConfig();
+
+            EPS_API.ftpServerAddress = configuration.getString("ftp_server_address");
+            EPS_API.ftpServerPort = configuration.getInt("ftp_server_port");
+            EPS_API.ftpServerUser = configuration.getString("ftp_server_user");
+            EPS_API.ftpServerPassword = configuration.getString("ftp_server_password");
 
         } catch (IOException e) {
             e.printStackTrace();
