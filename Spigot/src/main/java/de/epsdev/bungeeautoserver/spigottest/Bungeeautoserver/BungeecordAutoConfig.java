@@ -5,6 +5,7 @@ import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.packages.AnnounceBroadcastPackage;
 import de.epsdev.bungeeautoserver.api.packages.AnnounceRestartPackage;
+import de.epsdev.bungeeautoserver.api.tools.FTPManagement;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.*;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.config.GUI_Config;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_InventoryChangeEvent;
@@ -14,6 +15,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 public final class BungeecordAutoConfig extends JavaPlugin {
     public static FileConfiguration config;
@@ -58,7 +61,6 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getCommand("unban").setExecutor(new c_unban());
         getCommand("uwu").setExecutor(new c_uwu());
 
-
         // Events
 
         getServer().getPluginManager().registerEvents(new e_OnSignChange(), this);
@@ -67,9 +69,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
 
         // Updates
 
-        if(Config.isBungeeReady() && Config.checkUpdate("plugins/BungeecordAutoConfig",
-               "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/sha512",
-                "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/BungeecordAutoConfig.jar")){
+        if(Config.isBungeeReady()){
             eps_api = new EPS_API(OperationType.CLIENT);
             eps_api.setRemoteAddress(config.getString("bungee_address"));
             eps_api.setPort(Bukkit.getPort());
@@ -82,6 +82,20 @@ public final class BungeecordAutoConfig extends JavaPlugin {
 
             GUI_Config.init();
 
+            while (EPS_API.backupChannelName.equals("")) {}
+
+            if (!EPS_API.ftpServerAddress.equals("")) {
+                try {
+                    FTPManagement.downloadWorld(
+                            EPS_API.ftpServerAddress,
+                            EPS_API.ftpServerPort,
+                            EPS_API.ftpServerUser,
+                            EPS_API.ftpServerPassword
+                    );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }else {
             Bukkit.shutdown();
         }
@@ -89,6 +103,17 @@ public final class BungeecordAutoConfig extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        try {
+            FTPManagement.uploadWorld(
+                    EPS_API.ftpServerAddress,
+                    EPS_API.ftpServerPort,
+                    EPS_API.ftpServerUser,
+                    EPS_API.ftpServerPassword
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if(eps_api != null) eps_api.disable();
     }
 
