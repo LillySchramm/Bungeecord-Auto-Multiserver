@@ -3,6 +3,7 @@ package de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver;
 import de.epsdev.bungeeautoserver.api.EPS_API;
 import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
+import de.epsdev.bungeeautoserver.api.interfaces.FTPStatusEmitter;
 import de.epsdev.bungeeautoserver.api.packages.AnnounceBroadcastPackage;
 import de.epsdev.bungeeautoserver.api.packages.AnnounceRestartPackage;
 import de.epsdev.bungeeautoserver.api.tools.FTPManagement;
@@ -27,6 +28,33 @@ public final class BungeecordAutoConfig extends JavaPlugin {
     public void onEnable() {
         config = getConfig();
         plugin = this;
+
+        FTPManagement.ftpStatusEmitter = new FTPStatusEmitter() {
+            @Override
+            public void startDownload(String directoryName) {
+                System.out.println("Downloading " + directoryName);
+            }
+
+            @Override
+            public void startUpload(String directoryName) {
+                System.out.println("Uploading " + directoryName);
+            }
+
+            @Override
+            public void finishDownload(long size) {
+                System.out.println("Done: " + size / 1000 + "kb");
+            }
+
+            @Override
+            public void finishUpload(long size) {
+                System.out.println("Done: " + size / 1000 + "kb");
+            }
+
+            @Override
+            public void finishTotal(long totalSize) {
+                System.out.println("TOTAL: " + totalSize / 1000 + "kb");
+            }
+        };
 
         init_config();
 
@@ -60,6 +88,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getCommand("ban").setExecutor(new c_ban());
         getCommand("unban").setExecutor(new c_unban());
         getCommand("uwu").setExecutor(new c_uwu());
+        getCommand("save").setExecutor(new c_save());
 
         // Events
 
@@ -103,17 +132,6 @@ public final class BungeecordAutoConfig extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        try {
-            FTPManagement.uploadWorld(
-                    EPS_API.ftpServerAddress,
-                    EPS_API.ftpServerPort,
-                    EPS_API.ftpServerUser,
-                    EPS_API.ftpServerPassword
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         if(eps_api != null) eps_api.disable();
     }
 

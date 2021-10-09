@@ -40,6 +40,9 @@ commands:
   uwu:
     description: Shows the current versions hash.
 
+  save:
+    description: Uploads the world to an FTPS server
+
   menu:
     aliases:
       - server
