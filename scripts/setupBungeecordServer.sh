@@ -8,6 +8,11 @@ echo " "
 
 read -p "Default Server Type: " defaultServer
 
+read -p "FTP Server Address (Leave Empty To Disable): " ftp_server_address
+read -p "FTP Server Port (Leave Empty To Disable): " ftp_server_port
+read -p "FTP Server User Name (Leave Empty To Disable): " ftp_server_user
+read -p "FTP Server User Password (Leave Empty To Disable): " ftp_server_password
+
 #System Update
 
 apt update
@@ -46,6 +51,10 @@ cd Bungee
 
 echo "key: '${password}'"                                   >> config.yml
 echo "default_type: '${defaultServer}'"                     >> config.yml
+echo "ftp_server_address: '${ftp_server_address}'"          >> config.yml
+echo "ftp_server_port: ${ftp_server_port}"                  >> config.yml
+echo "ftp_server_user: '${ftp_server_user}'"                >> config.yml
+echo "ftp_server_password: '${ftp_server_password}'"        >> config.yml
 
 cd ../..
 

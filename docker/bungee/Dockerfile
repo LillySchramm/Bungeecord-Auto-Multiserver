@@ -5,6 +5,11 @@ FROM ubuntu:18.04
 ENV PASSWORD=""
 ENV DEFAULT_SERVER="Hub"
 
+ENV FTP_ADDRESS=""
+ENV FTP_PORT=0
+ENV FTP_USER=""
+ENV FTP_PASSWORD=""
+
 WORKDIR /server
 
 RUN apt update
@@ -22,6 +27,11 @@ RUN mkdir plugins/Bungee
 
 RUN echo "key: '${PASSWORD}'"                                   >> plugins/Bungee/config.yml
 RUN echo "default_type: '${DEFAULT_SERVER}'"                    >> plugins/Bungee/config.yml 
+RUN echo "ftp_server_address: '${FTP_ADDRESS}'"                 >> plugins/Bungee/config.yml
+RUN echo "ftp_server_port: ${FTP_PORT}"                         >> plugins/Bungee/config.yml
+RUN echo "ftp_server_user: '${FTP_USER}'"                       >> plugins/Bungee/config.yml
+RUN echo "ftp_server_password: '${FTP_PASSWORD}'"               >> plugins/Bungee/config.yml
+
 
 RUN echo "#Installed via script"                                                                    >> server.sh
 RUN echo "while true; do"                                                                           >> server.sh
