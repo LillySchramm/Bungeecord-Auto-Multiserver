@@ -10,6 +10,7 @@ import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.*;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.config.GUI_Config;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_InventoryChangeEvent;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnBlockInteract;
+import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnCommand;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnSignChange;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -67,6 +68,7 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new e_OnSignChange(), this);
         getServer().getPluginManager().registerEvents(new e_OnBlockInteract(), this);
         getServer().getPluginManager().registerEvents(new e_InventoryChangeEvent(), this);
+        getServer().getPluginManager().registerEvents(new e_OnCommand(), this);
 
         // Updates
 
