@@ -40,6 +40,7 @@ public class EPS_API {
     public static String ftpServerPassword = "";
 
     public static String backupChannelName = "";
+    public static boolean backUpOutOfSync = false;
 
     public static List<Socket> sockets = new ArrayList<>();
 
@@ -78,12 +79,14 @@ public class EPS_API {
         Package.registerPackage("RequestBroadcastPackage", RequestBroadcastPackage.class);
         Package.registerPackage("RequestBanPackage", RequestBanPackage.class);
         Package.registerPackage("RequestUnbanPackage", RequestUnbanPackage.class);
+        Package.registerPackage("RequestSaveBroadcastPackage", RequestSaveBroadcastPackage.class);
 
         Package.registerPackage("RespondRegisterPackage", RespondRegisterPackage.class);
         Package.registerPackage("RespondServerStatusPackage", RespondServerStatusPackage.class);
 
         Package.registerPackage("AnnounceBroadcastPackage", AnnounceBroadcastPackage.class);
         Package.registerPackage("AnnounceRestartPackage", AnnounceRestartPackage.class);
+        Package.registerPackage("AnnounceSavePackage", AnnounceSavePackage.class);
 
         if(this.operationType == OperationType.SERVER){
 
