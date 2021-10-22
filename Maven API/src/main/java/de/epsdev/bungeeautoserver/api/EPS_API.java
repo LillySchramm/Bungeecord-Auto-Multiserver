@@ -34,6 +34,14 @@ public class EPS_API {
     private int max_players = 2;
     private String type = "Hub";
 
+    public static String ftpServerAddress = "";
+    public static int ftpServerPort = 0;
+    public static String ftpServerUser = "";
+    public static String ftpServerPassword = "";
+
+    public static String backupChannelName = "";
+    public static boolean backUpOutOfSync = false;
+
     public static List<Socket> sockets = new ArrayList<>();
 
     public static HashMap<String, ArrayList<ServerInfo>> serverInfo = new HashMap<>();
@@ -71,12 +79,14 @@ public class EPS_API {
         Package.registerPackage("RequestBroadcastPackage", RequestBroadcastPackage.class);
         Package.registerPackage("RequestBanPackage", RequestBanPackage.class);
         Package.registerPackage("RequestUnbanPackage", RequestUnbanPackage.class);
+        Package.registerPackage("RequestSaveBroadcastPackage", RequestSaveBroadcastPackage.class);
 
         Package.registerPackage("RespondRegisterPackage", RespondRegisterPackage.class);
         Package.registerPackage("RespondServerStatusPackage", RespondServerStatusPackage.class);
 
         Package.registerPackage("AnnounceBroadcastPackage", AnnounceBroadcastPackage.class);
         Package.registerPackage("AnnounceRestartPackage", AnnounceRestartPackage.class);
+        Package.registerPackage("AnnounceSavePackage", AnnounceSavePackage.class);
 
         if(this.operationType == OperationType.SERVER){
 
@@ -106,6 +116,7 @@ public class EPS_API {
                 this.connection = new Connection(remoteAddress, 10101);
                 this.connection.start();
 
+                EPS_API.backupChannelName = this.type;
                 this.connection.send(new RequestRegisterServerPackage(this.port, this.type, this.max_players));
 
             } catch (NoRemoteAddressException | NoPortDefinedException e) {

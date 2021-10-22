@@ -5,15 +5,19 @@ import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.packages.AnnounceBroadcastPackage;
 import de.epsdev.bungeeautoserver.api.packages.AnnounceRestartPackage;
+import de.epsdev.bungeeautoserver.api.tools.FTPManagement;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.commands.*;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.config.GUI_Config;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_InventoryChangeEvent;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnBlockInteract;
+import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnCommand;
 import de.epsdev.bungeeautoserver.spigottest.Bungeeautoserver.events.e_OnSignChange;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 public final class BungeecordAutoConfig extends JavaPlugin {
     public static FileConfiguration config;
@@ -57,19 +61,18 @@ public final class BungeecordAutoConfig extends JavaPlugin {
         getCommand("ban").setExecutor(new c_ban());
         getCommand("unban").setExecutor(new c_unban());
         getCommand("uwu").setExecutor(new c_uwu());
-
+        getCommand("save").setExecutor(new c_save());
 
         // Events
 
         getServer().getPluginManager().registerEvents(new e_OnSignChange(), this);
         getServer().getPluginManager().registerEvents(new e_OnBlockInteract(), this);
         getServer().getPluginManager().registerEvents(new e_InventoryChangeEvent(), this);
+        getServer().getPluginManager().registerEvents(new e_OnCommand(), this);
 
         // Updates
 
-        if(Config.isBungeeReady() && Config.checkUpdate("plugins/BungeecordAutoConfig",
-               "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/sha512",
-                "https://ci.eps-dev.de/job/BungeecordAutoConfig-Spigot/lastSuccessfulBuild/artifact/Spigot/target/BungeecordAutoConfig.jar")){
+        if(Config.isBungeeReady()){
             eps_api = new EPS_API(OperationType.CLIENT);
             eps_api.setRemoteAddress(config.getString("bungee_address"));
             eps_api.setPort(Bukkit.getPort());
@@ -82,6 +85,20 @@ public final class BungeecordAutoConfig extends JavaPlugin {
 
             GUI_Config.init();
 
+            while (EPS_API.backupChannelName.equals("")) {}
+
+            if (!EPS_API.ftpServerAddress.equals("")) {
+                try {
+                    FTPManagement.downloadWorld(
+                            EPS_API.ftpServerAddress,
+                            EPS_API.ftpServerPort,
+                            EPS_API.ftpServerUser,
+                            EPS_API.ftpServerPassword
+                    );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }else {
             Bukkit.shutdown();
         }
