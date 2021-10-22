@@ -26,6 +26,9 @@ public class RespondRegisterPackage extends Package {
     public void onPackageReceive(Socket socket, Object o) {
         EPS_API.NAME = getString("name");
 
+        System.out.println(getString("ftp_server"));
+        EPS_API.backupChannelName = EPS_API.type;
+
         EPS_API.ftpServerAddress = getString("ftp_server");
         EPS_API.ftpServerPort = getInteger("ftp_port");
         EPS_API.ftpServerUser = getString("ftp_user");

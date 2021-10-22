@@ -73,8 +73,7 @@ public class Config {
             newContent += line + "\n";
         }
 
-        writeFile(file, newContent);
-
+        if (changeNeeded) EPS_API.syncEmitter.scheduleSyncSave(file, newContent);
         return changeNeeded;
     }
 
@@ -92,8 +91,7 @@ public class Config {
 
             newContent += line + "\n";
         }
-
-        writeFile(file, newContent);
+        if (changeNeeded) EPS_API.syncEmitter.scheduleSyncSave(file, newContent);
         return changeNeeded;
     }
 
@@ -152,7 +150,7 @@ public class Config {
         return lines;
     }
 
-    private static void writeFile(File f, String content){
+    public static void writeFile(File f, String content){
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(f);
