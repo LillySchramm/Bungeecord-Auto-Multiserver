@@ -3,11 +3,13 @@ package de.epsdev.bungeeautoserver.api;
 import de.epsdev.bungeeautoserver.api.enums.OperationType;
 import de.epsdev.bungeeautoserver.api.exeptions.NoPortDefinedException;
 import de.epsdev.bungeeautoserver.api.exeptions.NoRemoteAddressException;
+import de.epsdev.bungeeautoserver.api.interfaces.SyncEmitter;
 import de.epsdev.bungeeautoserver.api.packages.*;
 import de.epsdev.packages.Connection;
 import de.epsdev.packages.Server;
 import de.epsdev.packages.packages.Package;
 
+import java.io.File;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +34,7 @@ public class EPS_API {
     public Connection connection;
     private int port = -1;
     private int max_players = 2;
-    private String type = "Hub";
+    public static String type = "Hub";
 
     public static String ftpServerAddress = "";
     public static int ftpServerPort = 0;
@@ -41,6 +43,8 @@ public class EPS_API {
 
     public static String backupChannelName = "";
     public static boolean backUpOutOfSync = false;
+
+    public static SyncEmitter syncEmitter = (f, content) -> {};
 
     public static List<Socket> sockets = new ArrayList<>();
 
@@ -116,8 +120,7 @@ public class EPS_API {
                 this.connection = new Connection(remoteAddress, 10101);
                 this.connection.start();
 
-                EPS_API.backupChannelName = this.type;
-                this.connection.send(new RequestRegisterServerPackage(this.port, this.type, this.max_players));
+                this.connection.send(new RequestRegisterServerPackage(this.port, EPS_API.type, this.max_players));
 
             } catch (NoRemoteAddressException | NoPortDefinedException e) {
                 e.printStackTrace();
