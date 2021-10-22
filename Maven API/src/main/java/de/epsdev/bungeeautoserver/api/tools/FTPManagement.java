@@ -1,6 +1,7 @@
 package de.epsdev.bungeeautoserver.api.tools;
 
 import de.epsdev.bungeeautoserver.api.EPS_API;
+import de.epsdev.bungeeautoserver.api.config.Config;
 import de.epsdev.bungeeautoserver.api.interfaces.FTPStatusEmitter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.PrintCommandListener;
